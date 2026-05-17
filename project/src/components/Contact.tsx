@@ -1,46 +1,52 @@
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
-import { Send, MessageCircle, Hash, Mail, ArrowRight } from 'lucide-react';
+import { Send, Instagram, MessageSquare, Mail, ArrowRight } from 'lucide-react';
+
+// Чистый SVG для TikTok, так как в Lucide его нет по дефолту
+const TikTokIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" className={className} fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+    <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.05 1.7 4.16 1.12 1.11 2.7 1.68 4.25 1.75v3.92c-1.72-.04-3.41-.63-4.75-1.72-.11-.08-.2-.17-.3-.26v6.62c.04 2.11-.55 4.31-2.04 5.84-1.6 1.74-4.13 2.51-6.43 2.11-2.48-.35-4.74-2.19-5.46-4.63-1.01-3.14.7-6.73 3.84-7.65 1.16-.36 2.41-.29 3.52.2v4.06c-.84-.45-1.89-.52-2.75-.07-.98.48-1.55 1.59-1.42 2.68.1 1.05.97 1.93 2.02 2.01 1.04.14 2.14-.42 2.57-1.37.24-.46.32-.99.3-1.51V0h4.35z"/>
+  </svg>
+);
 
 const channels = [
   {
-    icon: Send,
+    icon: (props: any) => <Send {...props} />,
     label: 'Telegram',
-    handle: '@thumbcraft_design',
-    href: 'https://t.me/thumbcraft_design',
-    accent: '#22d3ee',
+    handle: '@lenz1o',
+    href: 'https://t.me/lenz1o',
+    accent: '#38bdf8', // Голубой под ТГ
     description: 'Fastest response — usually within hours',
   },
   {
-    icon: Hash,
-    label: 'Discord',
-    handle: 'thumbcraft#0001',
-    href: '#',
-    accent: '#a855f7',
-    description: 'Join the server to discuss your project',
+    icon: (props: any) => <Instagram {...props} />,
+    label: 'Instagram',
+    handle: 'smoky.psd',
+    href: 'https://instagram.com/smoky.psd',
+    accent: '#f472b6', // Розовый
+    description: 'DM for designs, source files and previews',
   },
   {
-    icon: Mail,
-    label: 'Email',
-    handle: 'hello@thumbcraft.design',
-    href: 'mailto:hello@thumbcraft.design',
-    accent: '#f472b6',
-    description: 'For detailed briefs and contracts',
+    icon: (props: any) => <TikTokIcon {...props} />,
+    label: 'TikTok',
+    handle: 'flamezcs',
+    href: 'https://www.tiktok.com/@flamezcs',
+    accent: '#22d3ee', // Бирюза
+    description: 'Check out recent edits and content examples',
+  },
+  {
+    icon: (props: any) => <MessageSquare {...props} />,
+    label: 'Discord',
+    handle: 'smoky.psd_9843',
+    href: 'https://discord.com/users/928014524128538624', // Либо '#' если просто как инфо
+    accent: '#a855f7', // Фиолетовый
+    description: 'Available for text or voice chat discussions',
   },
 ];
 
 export default function Contact() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: '-80px' });
-  const [formData, setFormData] = useState({ name: '', channel: '', message: '' });
-  const [submitted, setSubmitted] = useState(false);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 4000);
-    setFormData({ name: '', channel: '', message: '' });
-  };
 
   return (
     <section id="contact" className="py-24 bg-[#0b0b12] relative overflow-hidden">
@@ -49,182 +55,99 @@ export default function Contact() {
         style={{ background: 'linear-gradient(90deg, transparent, #7c3aed 30%, #a855f7 50%, #7c3aed 70%, transparent)' }}
       />
       <div
-        className="absolute top-1/4 right-0 w-[400px] h-[400px] opacity-10 pointer-events-none"
+        className="absolute -bottom-32 left-1/2 -translate-x-1/2 w-[600px] h-[300px] opacity-10 pointer-events-none"
         style={{
-          background: 'radial-gradient(circle, #4c1d95, transparent 70%)',
+          background: 'radial-gradient(ellipse, #7c3aed, transparent 70%)',
           filter: 'blur(80px)',
         }}
       />
 
-      <div className="max-w-6xl mx-auto px-6">
+      <div className="max-w-4xl mx-auto px-6">
+        {/* Заголовок */}
         <motion.div
           ref={ref}
           initial={{ opacity: 0, y: 30 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.7 }}
-          className="mb-14"
+          className="mb-14 text-center"
         >
-          <div className="flex items-center gap-3 mb-4">
-            <div className="h-px flex-1 max-w-12" style={{ background: 'linear-gradient(90deg, transparent, #7c3aed)' }} />
+          <div className="flex items-center justify-center gap-3 mb-4">
+            <div className="h-px w-12" style={{ background: 'linear-gradient(90deg, transparent, #7c3aed)' }} />
             <span className="text-xs font-mono-custom text-purple-500 tracking-widest uppercase">Contact</span>
+            <div className="h-px w-12" style={{ background: 'linear-gradient(270deg, transparent, #7c3aed)' }} />
           </div>
           <h2 className="section-title text-4xl md:text-5xl font-bold text-white mb-4">
-            Let's <span className="text-transparent bg-clip-text" style={{ backgroundImage: 'linear-gradient(135deg, #a855f7, #f472b6)' }}>Work</span>
+            Let's Make Something <span className="text-transparent bg-clip-text" style={{ backgroundImage: 'linear-gradient(135deg, #a855f7, #f472b6)' }}>Epic</span>
           </h2>
-          <p className="text-gray-500 max-w-lg">Ready to take your thumbnails to the next level? Reach out through any channel.</p>
+          <p className="text-gray-500 max-w-md mx-auto">
+            Ready to take your project to the next level? Drop me a line on any preferred platform.
+          </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          {/* Left: channels */}
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            animate={inView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.7, delay: 0.2 }}
-            className="space-y-4"
-          >
-            {channels.map((ch, i) => {
-              const Icon = ch.icon;
-              return (
-                <motion.a
-                  key={ch.label}
-                  href={ch.href}
-                  target={ch.href.startsWith('http') ? '_blank' : undefined}
-                  rel="noreferrer"
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={inView ? { opacity: 1, x: 0 } : {}}
-                  transition={{ duration: 0.5, delay: 0.3 + i * 0.1 }}
-                  className="flex items-center gap-5 p-5 glass-card rounded-xl group hover:translate-x-1 transition-transform duration-300"
-                  style={{
-                    border: `1px solid rgba(168,85,247,0.1)`,
-                  }}
-                  data-hover
-                >
-                  <div
-                    className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 transition-transform duration-300 group-hover:scale-110"
-                    style={{
-                      background: `${ch.accent}18`,
-                      border: `1px solid ${ch.accent}35`,
-                    }}
-                  >
-                    <Icon className="w-5 h-5" style={{ color: ch.accent }} />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className="font-semibold text-white">{ch.label}</span>
-                    </div>
-                    <div className="font-mono-custom text-sm mb-1" style={{ color: ch.accent }}>{ch.handle}</div>
-                    <div className="text-xs text-gray-600">{ch.description}</div>
-                  </div>
-                  <ArrowRight
-                    className="w-4 h-4 text-gray-600 group-hover:text-purple-400 group-hover:translate-x-1 transition-all flex-shrink-0"
-                  />
-                </motion.a>
-              );
-            })}
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 0.7 }}
-              className="glass-card rounded-xl p-5 mt-6"
-              style={{ border: '1px solid rgba(168,85,247,0.1)' }}
-            >
-              <div className="flex items-center gap-2 mb-2">
-                <MessageCircle className="w-4 h-4 text-purple-400" />
-                <span className="text-sm font-semibold text-gray-300">Typical response time</span>
-              </div>
-              <p className="text-xs text-gray-500 leading-relaxed">
-                I respond within <span className="text-purple-400">2–6 hours</span> on weekdays.
-                Feel free to include your YouTube channel link and a brief description of your style when reaching out.
-              </p>
-            </motion.div>
-          </motion.div>
-
-          {/* Right: quick message form */}
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            animate={inView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.7, delay: 0.3 }}
-          >
-            <form
-              onSubmit={handleSubmit}
-              className="glass-card rounded-2xl p-8 space-y-5"
-              style={{ border: '1px solid rgba(168,85,247,0.15)' }}
-            >
-              <h3 className="text-lg font-bold text-white mb-1">Quick Message</h3>
-              <p className="text-xs text-gray-500 mb-2">I'll get back to you within 24 hours.</p>
-
-              <div>
-                <label className="block text-xs font-mono-custom text-gray-500 tracking-widest uppercase mb-2">Name</label>
-                <input
-                  type="text"
-                  required
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  placeholder="Your name or channel"
-                  className="w-full bg-[#050505]/70 border border-purple-900/30 rounded-lg px-4 py-3 text-gray-200 text-sm placeholder-gray-600 focus:outline-none focus:border-purple-500/60 transition-colors"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-mono-custom text-gray-500 tracking-widest uppercase mb-2">Channel / Link</label>
-                <input
-                  type="text"
-                  value={formData.channel}
-                  onChange={(e) => setFormData({ ...formData, channel: e.target.value })}
-                  placeholder="youtube.com/yourchannel"
-                  className="w-full bg-[#050505]/70 border border-purple-900/30 rounded-lg px-4 py-3 text-gray-200 text-sm placeholder-gray-600 focus:outline-none focus:border-purple-500/60 transition-colors"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-mono-custom text-gray-500 tracking-widest uppercase mb-2">Message</label>
-                <textarea
-                  required
-                  value={formData.message}
-                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  placeholder="Tell me about your project, niche, and style preferences..."
-                  rows={4}
-                  className="w-full bg-[#050505]/70 border border-purple-900/30 rounded-lg px-4 py-3 text-gray-200 text-sm placeholder-gray-600 focus:outline-none focus:border-purple-500/60 transition-colors resize-none"
-                />
-              </div>
-
-              <button
-                type="submit"
-                className="w-full py-3.5 rounded-xl font-semibold text-white text-sm transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2"
-                style={{
-                  background: submitted
-                    ? 'linear-gradient(135deg, #059669, #10b981)'
-                    : 'linear-gradient(135deg, #7c3aed, #a855f7)',
-                  boxShadow: submitted
-                    ? '0 0 25px rgba(5,150,105,0.4)'
-                    : '0 0 25px rgba(124,58,237,0.4)',
+        {/* Сетка контактов во всю ширину */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-3xl mx-auto">
+          {channels.map((ch, i) => {
+            const Icon = ch.icon;
+            return (
+              <motion.a
+                key={ch.label}
+                href={ch.href}
+                target={ch.href.startsWith('http') ? '_blank' : undefined}
+                rel="noreferrer"
+                initial={{ opacity: 0, y: 20 }}
+                animate={inView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.5, delay: i * 0.1 }}
+                whileHover={{ 
+                  scale: 1.02,
+                  boxShadow: `0 0 25px ${ch.accent}20, inset 0 0 12px ${ch.accent}15`,
+                  borderColor: ch.accent
                 }}
+                className="flex items-center gap-5 p-5 glass-card rounded-xl border border-white/5 bg-[#050505]/40 backdrop-blur-md group transition-colors duration-300"
+                style={{
+                  border: `1px solid rgba(168,85,247,0.08)`,
+                }}
+                data-hover
               >
-                {submitted ? (
-                  <>
-                    <Check className="w-4 h-4" />
-                    Message Sent!
-                  </>
-                ) : (
-                  <>
-                    <Send className="w-4 h-4" />
-                    Send Message
-                  </>
-                )}
-              </button>
-            </form>
-          </motion.div>
+                <div
+                  className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 transition-transform duration-300 group-hover:scale-110"
+                  style={{
+                    background: `${ch.accent}12`,
+                    border: `1px solid ${ch.accent}30`,
+                  }}
+                >
+                  <Icon className="w-5 h-5" style={{ color: ch.accent }} />
+                </div>
+                
+                <div className="flex-1 min-w-0">
+                  <span className="font-semibold text-white block mb-0.5">{ch.label}</span>
+                  <div className="font-mono-custom text-sm mb-1 font-medium" style={{ color: ch.accent }}>
+                    {ch.handle}
+                  </div>
+                  <div className="text-xs text-gray-500 truncate">{ch.description}</div>
+                </div>
+
+                <ArrowRight
+                  className="w-4 h-4 text-gray-600 group-hover:text-purple-400 group-hover:translate-x-1 transition-all flex-shrink-0"
+                />
+              </motion.a>
+            );
+          })}
         </div>
+
+        {/* Плашка снизу */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ delay: 0.5 }}
+          className="glass-card rounded-xl p-5 mt-6 max-w-3xl mx-auto text-center sm:text-left"
+          style={{ border: '1px solid rgba(168,85,247,0.08)' }}
+        >
+          <p className="text-xs text-gray-500 leading-relaxed">
+            ⚡ Typical response time is <span className="text-purple-400 font-semibold">2–6 hours</span>. 
+            Feel free to include reference links, your YouTube channel, and a brief description of what you need when reaching out.
+          </p>
+        </motion.div>
       </div>
     </section>
-  );
-}
-
-function Check({ className }: { className?: string }) {
-  return (
-    <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-    </svg>
   );
 }
