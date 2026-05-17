@@ -3,7 +3,6 @@ backend:
   repo: platstarinum-prog/thumbn
   branch: main
 
-# Добавляем project/ в пути к медиа-файлам
 media_folder: "project/public/images/uploads"
 public_folder: "/images/uploads"
 
@@ -11,24 +10,29 @@ collections:
   # Настройка для блока SELECTED WORKS
   - name: "selected_works"
     label: "Selected Works (Карточки)"
-    folder: "project/src/content/works" # <-- ДОБАВИЛИ project/ В НАЧАЛО
+    folder: "project/src/content/works"
+    extension: "json" # <-- Важно: сохраняем как .json
+    format: "json"    # <-- Важно: пишем в формате json
     create: true
     delete: true
     slug: "{{slug}}"
     fields:
       - { label: "Название проекта (Title)", name: "title", widget: "string" }
-      - { label: "Превью (Image)", name: "image", widget: "image" }
-      - { label: "Тег (Категория)", name: "tag", widget: "select", options: ["Tech", "Gaming", "Finance", "Lifestyle", "Education"] }
-      - { label: "Просмотры (Views, например: 2.4M views)", name: "views", widget: "string" }
+      - { label: "Превью (Image)", name: "img", widget: "image" } # Изменено с image на img
+      - { label: "Тег (Категория)", name: "category", widget: "select", options: ["Tech", "Gaming", "Finance", "Lifestyle", "Education"] } # Изменено с tag на category
+      - { label: "Просмотры (Views)", name: "views", widget: "string" }
+      - { label: "Цвет акцента (HEX, например: #a855f7)", name: "accent", widget: "string" } # Добавлено поле для светяшек
 
   # Настройка для блока BEFORE / AFTER
   - name: "before_after"
     label: "Before / After (Слайдеры)"
-    folder: "project/src/content/before-after" # <-- ДОБАВИЛИ project/ В НАЧАЛО
+    folder: "project/src/content/before-after"
+    extension: "json" # <-- Важно: сохраняем как .json
+    format: "json"    # <-- Важно: пишем в формате json
     create: true
     delete: true
     slug: "{{slug}}"
     fields:
-      - { label: "Название (Например: Tech Tutorial)", name: "title", widget: "string" }
-      - { label: "Картинка ДО (Before)", name: "image_before", widget: "image" }
-      - { label: "Картинка ПОСЛЕ (After)", name: "image_after", widget: "image" }
+      - { label: "Название (Label)", name: "label", widget: "string" } # Изменено с title на label
+      - { label: "Картинка ДО (Before)", name: "before", widget: "image" } # Изменено с image_before на before
+      - { label: "Картинка ПОСЛЕ (After)", name: "after", widget: "image" } # Изменено с image_after на after
