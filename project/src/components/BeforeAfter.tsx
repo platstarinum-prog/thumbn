@@ -91,8 +91,8 @@ export default function BeforeAfter() {
   const [comparisons, setComparisons] = useState<ComparisonItem[]>([]);
 
   useEffect(() => {
-    // Учитываем монорепозиторий и подтягиваем .json файлы
-    const modules = import.meta.glob('/project/src/content/before-after/*.json', { eager: true });
+    // Vite уже в папке project, поэтому путь пишем от /src
+    const modules = import.meta.glob('/src/content/before-after/*.json', { eager: true });
     const loadedCards = Object.values(modules).map((module: any) => module.default || module) as ComparisonItem[];
     setComparisons(loadedCards);
   }, []);
