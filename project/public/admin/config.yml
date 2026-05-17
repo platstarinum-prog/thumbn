@@ -3,14 +3,15 @@ backend:
   repo: platstarinum-prog/thumbn
   branch: main
 
-media_folder: "public/images/uploads"
+# Добавляем project/ в пути к медиа-файлам
+media_folder: "project/public/images/uploads"
 public_folder: "/images/uploads"
 
 collections:
   # Настройка для блока SELECTED WORKS
   - name: "selected_works"
     label: "Selected Works (Карточки)"
-    folder: "src/content/works" # Файлы карточек будут сохраняться сюда
+    folder: "project/src/content/works" # <-- ДОБАВИЛИ project/ В НАЧАЛО
     create: true
     delete: true
     slug: "{{slug}}"
@@ -23,7 +24,7 @@ collections:
   # Настройка для блока BEFORE / AFTER
   - name: "before_after"
     label: "Before / After (Слайдеры)"
-    folder: "src/content/before-after" # Файлы слайдеров будут сохраняться сюда
+    folder: "project/src/content/before-after" # <-- ДОБАВИЛИ project/ В НАЧАЛО
     create: true
     delete: true
     slug: "{{slug}}"
