@@ -1,27 +1,7 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
 import { motion, useInView } from 'framer-motion';
 
-const comparisons = [
-  {
-    id: 1,
-    label: 'Tech Tutorial',
-    before: 'https://images.pexels.com/photos/4974914/pexels-photo-4974914.jpeg?auto=compress&cs=tinysrgb&w=800&h=450&fit=crop',
-    after: 'https://images.pexels.com/photos/1181671/pexels-photo-1181671.jpeg?auto=compress&cs=tinysrgb&w=800&h=450&fit=crop',
-  },
-  {
-    id: 2,
-    label: 'Gaming Video',
-    before: 'https://images.pexels.com/photos/442576/pexels-photo-442576.jpeg?auto=compress&cs=tinysrgb&w=800&h=450&fit=crop',
-    after: 'https://images.pexels.com/photos/3165335/pexels-photo-3165335.jpeg?auto=compress&cs=tinysrgb&w=800&h=450&fit=crop',
-  },
-  {
-    id: 3,
-    label: 'Finance Content',
-    before: 'https://images.pexels.com/photos/4386371/pexels-photo-4386371.jpeg?auto=compress&cs=tinysrgb&w=800&h=450&fit=crop',
-    after: 'https://images.pexels.com/photos/6801648/pexels-photo-6801648.jpeg?auto=compress&cs=tinysrgb&w=800&h=450&fit=crop',
-  },
-];
-
+// --- Компонент слайдера (Оставляем твою верстку и логику глитча) ---
 function ComparisonSlider({ before, after, label }: { before: string; after: string; label: string }) {
   const [pos, setPos] = useState(50);
   const [dragging, setDragging] = useState(false);
@@ -197,9 +177,33 @@ function ComparisonSlider({ before, after, label }: { before: string; after: str
   );
 }
 
+// --- Описываем интерфейс данных, прилетающих из JSON ---
+interface ComparisonItem {
+  label: string;
+  before: string;
+  after: string;
+}
+
+// --- Главный экспортируемый компонент ---
 export default function BeforeAfter() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: '-80px' });
+  
+  // Стейт, куда Vite будет складывать спарсенные карточки
+  const [comparisons, setComparisons] = useState<ComparisonItem[]>([]);
+
+  useEffect(() => {
+    // Vite сканирует папку и затягивает контент всех .json файлов.
+    // ⚠️ ВНИМАНИЕ: Убедись, что этот путь совпадает с "folder" в config.yml твоей админки!
+    const modules = import.meta.glob('/src/content/before_after/*.json', { eager: true });
+    
+    // Преобразуем объект модулей в массив данных
+    const loadedCards = Object.values(modules).map((module: any) => {
+      return module.default || module;
+    }) as ComparisonItem[];
+
+    setComparisons(loadedCards);
+  }, []);
 
   return (
     <section id="before-after" className="py-24 bg-[#0b0b12] relative overflow-hidden">
@@ -229,7 +233,7 @@ export default function BeforeAfter() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {comparisons.map((item, i) => (
             <motion.div
-              key={item.id}
+              key={i} // Используем индекс массива вместо id
               initial={{ opacity: 0, y: 40 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: i * 0.15 }}
