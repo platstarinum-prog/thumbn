@@ -11,28 +11,29 @@ collections:
   - name: "selected_works"
     label: "Selected Works (Карточки)"
     folder: "project/src/content/works"
-    extension: "json" # <-- Важно: сохраняем как .json
-    format: "json"    # <-- Важно: пишем в формате json
+    extension: "json"
+    format: "json"
     create: true
     delete: true
     slug: "{{slug}}"
     fields:
       - { label: "Название проекта (Title)", name: "title", widget: "string" }
-      - { label: "Превью (Image)", name: "img", widget: "image" } # Изменено с image на img
-      - { label: "Тег (Категория)", name: "category", widget: "select", options: ["Tech", "Gaming", "Finance", "Lifestyle", "Education"] } # Изменено с tag на category
+      - { label: "Ссылка на YouTube", name: "url", widget: "string", required: false } # <-- НОВОЕ ПОЛЕ
+      - { label: "Превью (Image)", name: "img", widget: "image" }
+      - { label: "Тег (Категория)", name: "category", widget: "select", options: ["Tech", "Gaming", "Finance", "Lifestyle", "Education"] }
       - { label: "Просмотры (Views)", name: "views", widget: "string" }
-      - { label: "Цвет акцента (HEX, например: #a855f7)", name: "accent", widget: "string" } # Добавлено поле для светяшек
+      - { label: "Цвет акцента (HEX, например: #a855f7)", name: "accent", widget: "string" }
 
   # Настройка для блока BEFORE / AFTER
   - name: "before_after"
     label: "Before / After (Слайдеры)"
     folder: "project/src/content/before-after"
-    extension: "json" # <-- Важно: сохраняем как .json
-    format: "json"    # <-- Важно: пишем в формате json
+    extension: "json"
+    format: "json"
     create: true
     delete: true
     slug: "{{slug}}"
     fields:
-      - { label: "Название (Label)", name: "label", widget: "string" } # Изменено с title на label
-      - { label: "Картинка ДО (Before)", name: "before", widget: "image" } # Изменено с image_before на before
-      - { label: "Картинка ПОСЛЕ (After)", name: "after", widget: "image" } # Изменено с image_after на after
+      - { label: "Название (Label)", name: "label", widget: "string" }
+      - { label: "Картинка ДО (Before)", name: "before", widget: "image" }
+      - { label: "Картинка ПОСЛЕ (After)", name: "after", widget: "image" }
