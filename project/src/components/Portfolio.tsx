@@ -1,85 +1,21 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
 import { ExternalLink } from 'lucide-react';
 
 const categories = ['All', 'Gaming', 'Tech', 'Finance', 'Lifestyle', 'Education'];
 
-const works = [
-  {
-    id: 1,
-    title: 'The Last Algorithm',
-    category: 'Tech',
-    views: '2.4M views',
-    img: 'https://images.pexels.com/photos/1181671/pexels-photo-1181671.jpeg?auto=compress&cs=tinysrgb&w=800&h=450&fit=crop',
-    accent: '#a855f7',
-  },
-  {
-    id: 2,
-    title: 'World Record Speedrun',
-    category: 'Gaming',
-    views: '8.1M views',
-    img: 'https://images.pexels.com/photos/3165335/pexels-photo-3165335.jpeg?auto=compress&cs=tinysrgb&w=800&h=450&fit=crop',
-    accent: '#f472b6',
-  },
-  {
-    id: 3,
-    title: 'Crypto Crash Explained',
-    category: 'Finance',
-    views: '5.6M views',
-    img: 'https://images.pexels.com/photos/6801648/pexels-photo-6801648.jpeg?auto=compress&cs=tinysrgb&w=800&h=450&fit=crop',
-    accent: '#22d3ee',
-  },
-  {
-    id: 4,
-    title: 'Solo Travel Guide',
-    category: 'Lifestyle',
-    views: '1.9M views',
-    img: 'https://images.pexels.com/photos/1051073/pexels-photo-1051073.jpeg?auto=compress&cs=tinysrgb&w=800&h=450&fit=crop',
-    accent: '#a855f7',
-  },
-  {
-    id: 5,
-    title: 'AI Changes Everything',
-    category: 'Tech',
-    views: '12.3M views',
-    img: 'https://images.pexels.com/photos/8386440/pexels-photo-8386440.jpeg?auto=compress&cs=tinysrgb&w=800&h=450&fit=crop',
-    accent: '#c084fc',
-  },
-  {
-    id: 6,
-    title: 'Math You Never Learned',
-    category: 'Education',
-    views: '3.7M views',
-    img: 'https://images.pexels.com/photos/6238297/pexels-photo-6238297.jpeg?auto=compress&cs=tinysrgb&w=800&h=450&fit=crop',
-    accent: '#f472b6',
-  },
-  {
-    id: 7,
-    title: 'Investing at 18',
-    category: 'Finance',
-    views: '4.2M views',
-    img: 'https://images.pexels.com/photos/6801874/pexels-photo-6801874.jpeg?auto=compress&cs=tinysrgb&w=800&h=450&fit=crop',
-    accent: '#22d3ee',
-  },
-  {
-    id: 8,
-    title: 'The Perfect Setup',
-    category: 'Tech',
-    views: '6.8M views',
-    img: 'https://images.pexels.com/photos/1714208/pexels-photo-1714208.jpeg?auto=compress&cs=tinysrgb&w=800&h=450&fit=crop',
-    accent: '#a855f7',
-  },
-  {
-    id: 9,
-    title: 'Dark Souls Lore',
-    category: 'Gaming',
-    views: '3.1M views',
-    img: 'https://images.pexels.com/photos/7862513/pexels-photo-7862513.jpeg?auto=compress&cs=tinysrgb&w=800&h=450&fit=crop',
-    accent: '#f472b6',
-  },
-];
+// --- Описываем интерфейс данных для карточки портфолио ---
+interface WorkItem {
+  label?: string; // На всякий случай, если Decap CMS использует заголовок как label
+  title: string;
+  category: string;
+  views: string;
+  img: string;
+  accent: string;
+}
 
-function ThumbnailCard({ work, index }: { work: typeof works[0]; index: number }) {
+// --- Компонент отдельной карточки (Твой 3D-tilt и RGB-эффекты) ---
+function ThumbnailCard({ work, index }: { work: WorkItem; index: number }) {
   const [hovered, setHovered] = useState(false);
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
   const cardRef = useRef<HTMLDivElement>(null);
@@ -193,11 +129,26 @@ function ThumbnailCard({ work, index }: { work: typeof works[0]; index: number }
   );
 }
 
+// --- Главный экспортируемый компонент Портфолио ---
 export default function Portfolio() {
   const [active, setActive] = useState('All');
+  const [works, setWorks] = useState<WorkItem[]>([]);
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: '-100px' });
 
+  useEffect(() => {
+    // Автоматически затягиваем все JSON файлы из папки карточек портфолио.
+    // ⚠️ ВАЖНО: Укажи здесь точный путь к папке, которая прописана в folder твоего config.yml!
+    const modules = import.meta.glob('/src/content/selected_works/*.json', { eager: true });
+    
+    const loadedWorks = Object.values(modules).map((module: any) => {
+      return module.default || module;
+    }) as WorkItem[];
+
+    setWorks(loadedWorks);
+  }, []);
+
+  // Фильтрация работает уже по динамическому стейту
   const filtered = active === 'All' ? works : works.filter((w) => w.category === active);
 
   return (
@@ -210,7 +161,7 @@ export default function Portfolio() {
       <div
         className="absolute -top-32 left-1/2 -translate-x-1/2 w-[600px] h-[300px] opacity-10 pointer-events-none"
         style={{
-          background: 'radial-gradient(ellipse, #7c3aed, transparent 70%)',
+          background: 'radial-gradient(ellipse #7c3aed, transparent 70%)',
           filter: 'blur(60px)',
         }}
       />
@@ -271,7 +222,7 @@ export default function Portfolio() {
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"
           >
             {filtered.map((work, i) => (
-              <ThumbnailCard key={work.id} work={work} index={i} />
+              <ThumbnailCard key={i} work={work} index={i} />
             ))}
           </motion.div>
         </AnimatePresence>
