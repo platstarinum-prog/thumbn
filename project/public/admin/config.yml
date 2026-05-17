@@ -1,0 +1,33 @@
+backend:
+  name: git-gateway
+  repo: platstarinum-prog/thumbn
+  branch: main
+
+media_folder: "public/images/uploads"
+public_folder: "/images/uploads"
+
+collections:
+  # Настройка для блока SELECTED WORKS
+  - name: "selected_works"
+    label: "Selected Works (Карточки)"
+    folder: "src/content/works" # Файлы карточек будут сохраняться сюда
+    create: true
+    delete: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Название проекта (Title)", name: "title", widget: "string" }
+      - { label: "Превью (Image)", name: "image", widget: "image" }
+      - { label: "Тег (Категория)", name: "tag", widget: "select", options: ["Tech", "Gaming", "Finance", "Lifestyle", "Education"] }
+      - { label: "Просмотры (Views, например: 2.4M views)", name: "views", widget: "string" }
+
+  # Настройка для блока BEFORE / AFTER
+  - name: "before_after"
+    label: "Before / After (Слайдеры)"
+    folder: "src/content/before-after" # Файлы слайдеров будут сохраняться сюда
+    create: true
+    delete: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Название (Например: Tech Tutorial)", name: "title", widget: "string" }
+      - { label: "Картинка ДО (Before)", name: "image_before", widget: "image" }
+      - { label: "Картинка ПОСЛЕ (After)", name: "image_after", widget: "image" }
