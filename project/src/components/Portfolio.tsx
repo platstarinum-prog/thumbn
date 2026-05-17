@@ -126,8 +126,8 @@ export default function Portfolio() {
   const inView = useInView(ref, { once: true, margin: '-100px' });
 
   useEffect(() => {
-    // Сканируем папку внутри пакета монорепозитория project/
-    const modules = import.meta.glob('/project/src/content/works/*.json', { eager: true });
+    // Vite уже в папке project, поэтому путь пишем от /src
+    const modules = import.meta.glob('/src/content/works/*.json', { eager: true });
     const loadedWorks = Object.values(modules).map((module: any) => module.default || module) as WorkItem[];
     setWorks(loadedWorks);
   }, []);
