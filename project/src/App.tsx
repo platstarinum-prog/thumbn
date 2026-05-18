@@ -1,4 +1,4 @@
-import CursorGlow from './components/CursorGlow';
+
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import Portfolio from './components/Portfolio';
