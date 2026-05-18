@@ -30,106 +30,81 @@ body {
   position: relative;
 }
 
-/* --- ЖЕСТКИЙ ДАТАМОШ НА ЗАДНЕМ ФОНЕ --- */
-/* Создаем сломанные пиксельные полосы сдвига, которые дергаются сзади контента */
+/* --- ЧИСТЫЙ ТЕМНЫЙ ФОН БЕЗ ДЕРГАНИЯ --- */
 body::before {
   content: "";
   position: fixed;
   inset: 0;
+  /* Статичная глубокая пиксельная текстура вместо мигающих полос */
   background: 
-    linear-gradient(90deg, rgba(255, 0, 85, 0.03) 0%, rgba(0, 240, 255, 0.03) 50%, rgba(255, 234, 0, 0.02) 100%),
-    repeating-linear-gradient(
-      0deg,
-      transparent 0px,
-      transparent 30px,
-      rgba(0, 240, 255, 0.07) 30px,
-      rgba(0, 240, 255, 0.07) 33px,
-      transparent 33px,
-      transparent 70px,
-      rgba(255, 0, 85, 0.07) 70px,
-      rgba(255, 0, 85, 0.07) 75px
-    );
+    linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.4) 50%),
+    linear-gradient(90deg, rgba(255, 0, 85, 0.01), rgba(0, 240, 255, 0.01));
+  background-size: 100% 4px, 6px 100%;
   pointer-events: none;
   z-index: -1;
-  animation: datamosh-bg 1.5s infinite steps(4); /* Эффект резких кадров без плавности */
 }
 
-/* РЕЗКИЕ СБОИ ЦВЕТОВЫХ БЛОКОВ ПРИ СКРОЛЛЕ И НА ФОНЕ */
-@keyframes datamosh-bg {
-  0% { background-position: 0 0; filter: hue-rotate(0deg); }
-  25% { background-position: 20px -50px; filter: hue-rotate(90deg) contrast(1.2); }
-  50% { background-position: -10px 80px; filter: hue-rotate(180deg); }
-  75% { background-position: 40px 10px; filter: hue-rotate(270deg) contrast(1.5); }
-  100% { background-position: 0 0; filter: hue-rotate(360deg); }
-}
-
-/* --- КАРТОЧКИ С ЖЕСТКИМ ЦИФРОВЫМ СДВИГОМ (ПРИ НАВЕДЕНИИ) --- */
+/* --- КАРТОЧКИ: СТАТИЧНЫЙ СТИЛЬ С ОСТРЫМ ЭФФЕКТОМ ПРИ НАВЕДЕНИИ --- */
 .thumb-card {
   position: relative;
   background: var(--bg-secondary);
-  border: 1px solid rgba(0, 240, 255, 0.2);
-  transition: transform 0.1s steps(2);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+  transition: border-color 0.15s ease, transform 0.15s ease;
 }
 
-/* При наведении карточка выдает резкие цветные полосы сдвига, как на твоем скрине */
+/* Эффект Datamosh проскакивает ТОЛЬКО когда юзер наводит мышку */
 .thumb-card:hover {
-  animation: card-mosh 0.4s infinite steps(3);
-  border-color: var(--neon-magenta);
+  transform: scale(1.01);
+  border-color: var(--neon-cyan);
+  animation: single-mosh 0.2s steps(2) forwards;
 }
 
-@keyframes card-mosh {
+/* Короткий, резкий пиксельный сдвиг кадра при ховере, который сразу затухает */
+@keyframes single-mosh {
   0% {
-    box-shadow: 
-      -4px 0 0 var(--neon-magenta), 
-      4px 0 0 var(--neon-cyan);
-    transform: translate(2px, -1px);
+    box-shadow: -4px 0 0 var(--neon-magenta), 4px 0 0 var(--neon-cyan);
+    filter: contrast(1.3) hue-rotate(10deg);
   }
-  33% {
-    box-shadow: 
-      -2px -3px 0 var(--neon-yellow), 
-      3px 2px 0 var(--neon-magenta);
-    transform: translate(-3px, 2px);
-  }
-  66% {
-    box-shadow: 
-      4px 2px 0 var(--neon-cyan), 
-      -3px -2px 0 var(--neon-yellow);
-    transform: translate(1px, -2px);
+  50% {
+    box-shadow: 3px 2px 0 var(--neon-yellow), -3px -1px 0 var(--neon-magenta);
+    filter: contrast(1.1) hue-rotate(-10deg);
   }
   100% {
-    box-shadow: 
-      -4px 0 0 var(--neon-magenta), 
-      4px 0 0 var(--neon-cyan);
-    transform: translate(0, 0);
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
+    filter: contrast(1) hue-rotate(0deg);
   }
 }
 
-/* --- ЧЕТКИЕ КАРТОЧКИ БЕЗ МЫЛА И БЛЮРА --- */
+/* --- СТИЛЬНЫЕ СТЕКЛЯННЫЕ ПАНЕЛИ (АДМИНКА/ИНТЕРФЕЙС) --- */
 .glass-card {
-  background: #06060c;
-  border: 1px solid rgba(255, 0, 85, 0.2);
-  /* Никаких backdrop-filter: blur, только чистый solid и сочный контур */
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
+  background: #05050a;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+  transition: border-color 0.2s ease;
 }
 
-/* --- ХРОМАТИЧЕСКИЙ СДВИГ НА ЗАГОЛОВКАХ --- */
+.glass-card:hover {
+  border-color: rgba(0, 240, 255, 0.3);
+}
+
+/* --- ЕСТЕСТВЕННЫЙ ХРОМАТИЧЕСКИЙ СДВИГ НА ТЕКСТЕ --- */
+/* Текст статичен, читается идеально. Раз в 6 секунд проскакивает микро-сбой матрицы */
 .glitch-text {
   position: relative;
-  text-shadow: 
-    -2px -1px 0px var(--neon-magenta), 
-    2px 1px 0px var(--neon-cyan);
-  animation: text-corrupt 4s infinite steps(2);
+  color: #fff;
+  animation: rare-glitch 6s infinite steps(1);
 }
 
-@keyframes text-corrupt {
-  0%, 95%, 100% { text-shadow: -2px -1px 0 var(--neon-magenta), 2px 1px 0 var(--neon-cyan); }
-  96% { text-shadow: -5px 2px 0 var(--neon-yellow), 5px -2px 0 var(--neon-magenta); }
-  97% { text-shadow: 4px -3px 0 var(--neon-cyan), -4px 3px 0 var(--neon-yellow); }
-  98% { text-shadow: -1px 4px 0 var(--neon-magenta), 2px -4px 0 var(--neon-cyan); }
+@keyframes rare-glitch {
+  0%, 95%, 100% { text-shadow: none; }
+  96% { text-shadow: -2px 0 var(--neon-magenta), 1px 0 var(--neon-cyan); }
+  97% { text-shadow: 2px -1px var(--neon-yellow), -2px 1px var(--neon-magenta); }
+  98% { text-shadow: -1px 1px var(--neon-cyan), 1px -1px var(--neon-yellow); }
 }
 
 .glow-text {
-  text-shadow: 0 0 8px var(--neon-cyan);
+  text-shadow: 0 0 10px rgba(0, 240, 255, 0.4);
 }
 
 .section-title {
