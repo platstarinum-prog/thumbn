@@ -13,7 +13,6 @@
   --glitch-magenta: #ff0055;
   --glitch-cyan: #00f0ff;
   --glitch-yellow: #ffea00;
-  --glitch-green: #00ff66;
 }
 
 html {
@@ -29,141 +28,84 @@ body {
   position: relative;
 }
 
-/* --- ГЛОБАЛЬНЫЕ ЖЁСТКИЕ ПРОСТРЕЛЫ ПО ЭКРАНУ (HARDWARE CORRUPTION) --- */
+/* --- ГЛОБАЛЬНЫЕ СДВИГИ СЛОЕВ НА ВСЮ СТРАНИЦУ --- */
+/* Этот слой создает редкие, но масштабные горизонтальные сдвиги целых секций экрана */
 body::before {
   content: "";
   position: fixed;
   inset: 0;
-  /* Статическая база: резкие битые линии сжатия данных */
-  background: repeating-linear-gradient(
-    0deg,
-    transparent 0px,
-    transparent 40px,
-    rgba(255, 0, 85, 0.05) 40px,
-    rgba(255, 0, 85, 0.05) 42px,
-    transparent 42px,
-    transparent 120px,
-    rgba(0, 240, 255, 0.05) 120px,
-    rgba(0, 240, 255, 0.05) 124px
-  );
   pointer-events: none;
-  z-index: 9990;
-  /* Редкие, но ебанутые прострелы артефактов по всему экрану */
-  animation: hardware-crash 8s infinite steps(1);
+  z-index: 9999;
+  animation: page-slice-glitch 5s infinite steps(1);
 }
 
-@keyframes hardware-crash {
-  0%, 94%, 98%, 100% {
-    background-image: none;
-    filter: chromatic-aberration(0);
+@keyframes page-slice-glitch {
+  0%, 19%, 21%, 59%, 61%, 100% {
+    background: transparent;
+    transform: translateX(0);
+    filter: none;
+  }
+  20% {
+    /* Резкий сдвиг широкой горизонтальной полосы через прайс/контакты */
+    background: rgba(0, 240, 255, 0.02);
+    clip-path: inset(40% 0 35% 0);
+    transform: translateX(12px);
+  }
+  60% {
+    /* Сдвиг нижней трети страницы на долю секунды */
+    background: rgba(255, 0, 85, 0.02);
+    clip-path: inset(70% 0 10% 0);
+    transform: translateX(-10px);
+  }
+}
+
+/* --- СЕКЦИИ САЙТА (ПРАЙС, КОНТАКТЫ И Т.Д.) ТОЖЕ ИНОГДА СДВИГАЮТСЯ --- */
+main section {
+  animation: section-twitch 7s infinite steps(1);
+}
+
+@keyframes section-twitch {
+  0%, 94%, 96%, 100% {
+    transform: translateX(0) skewX(0deg);
   }
   95% {
-    /* Мощный горизонтальный сдвиг блока пикселей посередине */
-    background: linear-gradient(to bottom, transparent 40%, var(--glitch-magenta) 40%, var(--glitch-cyan) 43%, transparent 43%);
-    transform: translateX(15px);
-  }
-  96% {
-    /* Сбой матрицы в зелёный массив */
-    background: repeating-linear-gradient(90deg, transparent 0, transparent 10px, rgba(0, 255, 102, 0.1) 10px, rgba(0, 255, 102, 0.1) 12px);
-    transform: translateX(-10px) translateY(5px);
-  }
-  97% {
-    /* Полный перекос фазы VRAM */
-    background: linear-gradient(rgba(255, 234, 0, 0.1) 100%, transparent 0);
-    transform: scaleY(1.02);
+    /* Легкий случайный сдвиг всей секции целиком */
+    transform: translateX(4px) skewX(0.5deg);
   }
 }
 
-/* --- ЭФФЕКТ СЛОМАННОГО КАДРА НА ВСЮ СТРАНИЦУ ПРИ СКРОЛЛЕ --- */
-/* При резком перемещении или ховере интерфейс выдаёт битые горизонтальные полосы */
+/* --- КАРТОЧКИ ГАЛЕРЕИ (ПОРТФОЛИО): МИНИМУМ ЭФФЕКТОВ --- */
 .thumb-card {
   position: relative;
   background: #06060a;
   border: 1px solid rgba(255, 255, 255, 0.05);
-  transition: transform 0.05s steps(1);
-  overflow: hidden;
+  /* Плавный переход чисто для цвета, никакой дичи */
+  transition: border-color 0.2s ease, transform 0.2s ease;
 }
 
-/* Эффект Datamosh / Битой видеокарты при наведении */
+/* На карточках оставил только легкий подъем и аккуратный статический хроматический отсвет */
 .thumb-card:hover {
-  animation: datamosh-destruction 0.3s infinite steps(3);
-  border: 1px solid var(--glitch-cyan);
+  transform: translateY(-4px);
+  border-color: var(--glitch-cyan);
+  box-shadow: -2px 0 0 var(--glitch-magenta), 2px 0 0 var(--glitch-cyan);
 }
 
-@keyframes datamosh-destruction {
-  0% {
-    transform: translate(3px, -2px) skewX(5deg);
-    box-shadow: -5px 0 0 var(--glitch-magenta), 3px 0 0 var(--glitch-green);
-    filter: contrast(1.5) brightness(1.2);
-  }
-  33% {
-    transform: translate(-4px, 3px) skewX(-8deg);
-    box-shadow: 4px -2px 0 var(--glitch-cyan), -3px 3px 0 var(--glitch-yellow);
-    filter: invert(0.05) contrast(2);
-  }
-  66% {
-    transform: translate(1px, -4px) skewX(2deg);
-    box-shadow: -3px 4px 0 var(--glitch-green), 5px -1px 0 var(--glitch-magenta);
-    filter: hue-rotate(45deg);
-  }
-  100% {
-    transform: translate(0, 0) skewX(0deg);
-    box-shadow: none;
-    filter: none;
-  }
-}
-
-/* Контент внутри карточки дублируем и сдвигаем псевдоэлементом, создавая эффект разорванного кадра */
-.thumb-card:hover::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: inherit;
-  background-position: center;
-  clip-path: inset(40% 0 35% 0); /* Вырезаем полосу посередине */
-  transform: translateX(-15px);  /* Сдвигаем её намертво влево */
-  opacity: 0.8;
-  z-index: 5;
-}
-
-/* --- ЖЁСТКИЕ СТЕКЛЯННЫЕ ИНТЕРФЕЙСЫ (БЕЗ МЫЛА) --- */
+/* Интерфейсные glass-панели */
 .glass-card {
   background: #040407;
   border: 1px solid rgba(255, 255, 255, 0.03);
   box-shadow: 0 5px 25px rgba(0, 0, 0, 0.9);
 }
 
-.glass-card:hover {
-  border-color: rgba(255, 0, 85, 0.3);
-  /* Резкий микро-сдвиг всей панели */
-  animation: panel-twitch 0.15s steps(2);
-}
-
-@keyframes panel-twitch {
-  0% { transform: translateX(-2px); }
-  50% { transform: translateX(3px) translateY(-1px); }
-  100% { transform: translate(0); }
-}
-
-/* --- БИТЫЙ ТЕКСТ (DATA CORRUPTION) --- */
+/* Текст с легким смещением слоев в тенях, без анимации движения */
 .glitch-text {
   position: relative;
   color: #fff;
-  /* Чёткое рубленое смещение слоёв без размытия */
-  text-shadow: -2px -1px 0 var(--glitch-magenta), 2px 1px 0 var(--glitch-cyan);
-  animation: text-shred 5s infinite steps(1);
+  text-shadow: -1.5px -0.5px 0 var(--glitch-magenta), 1.5px 0.5px 0 var(--glitch-cyan);
 }
 
-@keyframes text-shred {
-  0%, 93%, 97%, 100% { text-shadow: -2px -1px 0 var(--glitch-magenta), 2px 1px 0 var(--glitch-cyan); }
-  94% { text-shadow: -7px 3px 0 var(--glitch-yellow), 5px -1px 0 var(--glitch-green); }
-  95% { text-shadow: 6px -4px 0 var(--glitch-cyan), -5px 2px 0 var(--glitch-magenta); }
-  96% { text-shadow: -3px 5px 0 var(--glitch-green), 4px -5px 0 var(--glitch-yellow); }
-}
-
-/* Убираем неоновые glow-эффекты, делаем строгий резкий шрифт */
 .glow-text {
-  text-shadow: 2px 2px 0px rgba(0, 240, 255, 0.15);
+  text-shadow: 2px 2px 0px rgba(0, 240, 255, 0.1);
 }
 
 .section-title {
