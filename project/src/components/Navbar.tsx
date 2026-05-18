@@ -38,7 +38,7 @@ export default function Navbar() {
       >
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           
-          {/* Логотип: Новый бренд SMOKY */}
+          {/* Логотип: SMOKY */}
           <a
             href="#"
             className="flex items-center gap-2 group"
@@ -53,7 +53,7 @@ export default function Navbar() {
             </span>
           </a>
 
-          {/* Десктопное меню */}
+          {/* Десктопная навигация */}
           <nav className="hidden md:flex items-center gap-8">
             {links.map((l) => (
               <button
@@ -73,7 +73,7 @@ export default function Navbar() {
             </button>
           </nav>
 
-          {/* Бургер для мобилок */}
+          {/* Кнопка бутерброда для мобилок */}
           <button
             className="md:hidden text-gray-300 hover:text-cyan-400 transition-colors"
             onClick={() => setOpen(!open)}
@@ -83,7 +83,7 @@ export default function Navbar() {
         </div>
       </motion.header>
 
-      {/* Мобильное меню в полный экран */}
+      {/* Мобильное полноэкранное меню */}
       <AnimatePresence>
         {open && (
           <motion.div
@@ -119,7 +119,7 @@ export default function Navbar() {
               className="mt-4 px-8 py-3 text-sm font-bold font-mono-custom text-white border border-cyan-500/60 hover:bg-cyan-500/15 transition-all uppercase tracking-widest"
             >
               Get CTR
-            </button>
+            </motion.button>
           </motion.div>
         )}
       </AnimatePresence>
