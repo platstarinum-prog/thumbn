@@ -14,7 +14,6 @@
   --mosh-cyan: #00f0ff;
   --mosh-yellow: #ffea00;
   --mosh-green: #00ff66;
-  --mosh-purple: #b500ff;
 }
 
 html {
@@ -31,83 +30,82 @@ body {
 }
 
 /* ==========================================================================
-   НАТУРАЛЬНЫЕ СЛУЧАЙНЫЕ СДВИГИ И АРТЕФАКТЫ (ПОВЕРХ ВСЕГО)
+   УЛЬТРА-СКОРОСТНЫЕ ХАmultiplierОТИЧНЫЕ ПОЛОСОЧКИ (РАССИНХРОН)
    ========================================================================= */
 
-body::before, 
-body::after {
+/* Создаем 3 независимых слоя для полной поломки предсказуемости */
+body::before,
+body::after,
+.organic-glitch-overlay {
   content: "";
   position: fixed;
   inset: 0;
   pointer-events: none;
-  z-index: 99999; /* Всегда сверху */
+  z-index: 99999;
 }
 
-/* Первый слой: Длинный цикл. Полная тишина, и вдруг микро-серия полос */
+/* Слой 1: Мелкие, частые разноцветные нити */
 body::before {
-  animation: organic-stripes 7s infinite steps(1);
+  animation: fast-slices-a 3.1s infinite steps(1);
 }
 
-/* Второй слой: Другой тайминг. Выстреливает широкими пластами в другие моменты */
+/* Слой 2: Средние прострелы полосок (работает невпопад с первым) */
 body::after {
-  animation: organic-blocks 11s infinite steps(1);
+  animation: fast-slices-b 4.3s infinite steps(1);
 }
 
-/* АНИМАЦИЯ 1: Быстрые, как молния, прострелы полос (активность всего пару сотых долей секунды) */
-@keyframes organic-stripes {
-  /* 0% до 88% — ИДЕАЛЬНАЯ ТИШИНА (Сайт чистый) */
-  0%, 88%, 91%, 93%, 95%, 100% {
+/* АНИМАЦИЯ СЛОЯ А: Тонкие, как лезвие, горизонтальные срезы кадра на микро-мгновение */
+@keyframes fast-slices-a {
+  0%, 23%, 26%, 64%, 67%, 81%, 84%, 100% {
     background: transparent;
   }
-  /* 89% — Вспышка сверху */
-  89% {
-    background: linear-gradient(to bottom, transparent 8%, var(--mosh-magenta) 8%, var(--mosh-green) 12%, transparent 12%);
+  24% {
+    /* Розовая нить */
+    background: linear-gradient(to bottom, transparent 18%, var(--mosh-magenta) 18%, var(--mosh-magenta) 18.3%, transparent 18.3%);
   }
-  /* 90% — Моментальный сдвиг в центр */
-  90% {
-    background: linear-gradient(to bottom, transparent 45%, var(--mosh-yellow) 45%, var(--mosh-cyan) 49%, transparent 49%);
+  25% {
+    /* Тут же прыгает в зелено-желтую пару полосок ниже */
+    background: linear-gradient(to bottom, transparent 62%, var(--mosh-green) 62%, var(--mosh-green) 62.4%, transparent 62.4%, transparent 64%, var(--mosh-yellow) 64%, var(--mosh-yellow) 64.2%, transparent 64.2%);
   }
-  /* 92% — Пачка фиолетовых полос внизу (прайс/контакты) */
-  92% {
-    background: repeating-linear-gradient(0deg, transparent 0px, transparent 6px, var(--mosh-purple) 6px, var(--mosh-cyan) 9px);
-    clip-path: inset(70% 0 15% 0);
+  65% {
+    /* Одиночный резкий прострел у прайса */
+    background: linear-gradient(to bottom, transparent 48%, var(--mosh-cyan) 48%, var(--mosh-cyan) 48.5%, transparent 48.5%);
   }
-  /* 94% — Последний одиночный прострел перед затуханием */
-  94% {
-    background: linear-gradient(to bottom, transparent 75%, var(--mosh-magenta) 75%, var(--mosh-purple) 78%, transparent 78%);
+  82% {
+    /* Пачка микро-полос у контактов */
+    background: repeating-linear-gradient(0deg, transparent 0px, transparent 15px, var(--mosh-magenta) 15px, var(--mosh-cyan) 16px);
+    clip-path: inset(72% 0 25% 0);
   }
 }
 
-/* АНИМАЦИЯ 2: Редкие, тяжелые деструктивные куски кадров (Datamosh пласты) */
-@keyframes organic-blocks {
-  /* Сплошной покой почти весь цикл */
-  0%, 42%, 45%, 47%, 82%, 85%, 100% {
+/* АНИМАЦИЯ СЛОЯ Б: Вспыхивает абсолютно в другие тайминги, создавая эффект рваного рандома */
+@keyframes fast-slices-b {
+  0%, 11%, 14%, 48%, 51%, 90%, 93%, 100% {
     background: transparent;
   }
-  /* 43% — На миг срезало кусок экрана */
-  43% {
-    background: rgba(0, 240, 255, 0.12);
-    clip-path: inset(30% 0 40% 15%);
-    box-shadow: inset 100vw 0 0 rgba(255, 0, 85, 0.15);
+  12% {
+    /* Голубой разрез в верхней трети экрана */
+    background: linear-gradient(to bottom, transparent 30%, var(--mosh-cyan) 30%, var(--mosh-cyan) 30.4%, transparent 30.4%);
   }
-  /* 46% — Нижний пласт поплыл */
-  46% {
-    background: rgba(181, 0, 255, 0.15);
-    clip-path: inset(65% 10% 10% 0);
+  13% {
+    /* Резкое смещение слоев */
+    background: linear-gradient(to bottom, transparent 33%, var(--mosh-yellow) 33%, var(--mosh-magenta) 33.6%, transparent 33.6%);
   }
-  /* 83% — Внезапный горизонтальный разрыв развертки посередине */
-  83% {
-    background: linear-gradient(90deg, var(--mosh-magenta) 0%, var(--mosh-cyan) 100%);
-    opacity: 0.15;
-    clip-path: inset(20% 5% 55% 5%);
+  49% {
+    /* Тонкая прошивка по центру */
+    background: repeating-linear-gradient(0deg, transparent 0px, transparent 8px, var(--mosh-green) 8px, var(--mosh-magenta) 9px);
+    clip-path: inset(40% 0 58% 0);
+  }
+  91% {
+    /* Предпоследний микро-кадр перед тишиной */
+    background: linear-gradient(to bottom, transparent 85%, var(--mosh-cyan) 85%, var(--mosh-yellow) 85.5%, transparent 85.5%);
   }
 }
 
 /* ==========================================================================
-   КОНТЕНТ САЙТА (ПОРТФОЛИО, ТЕКСТ)
+   ИНТЕРФЕЙС И ГАЛЕРЕЯ (ЖЕСТКО СТАТИЧНЫЕ, ЧИТАЕМЫЕ)
    ========================================================================= */
 
-/* Карточки портфолио: чистые, аккуратные, без шума */
 .thumb-card {
   position: relative;
   background: #06060a;
@@ -118,7 +116,7 @@ body::after {
 .thumb-card:hover {
   transform: translateY(-4px);
   border-color: var(--mosh-cyan);
-  box-shadow: -3px 0 0 var(--mosh-magenta), 3px 0 0 var(--mosh-cyan);
+  box-shadow: -2px 0 0 var(--mosh-magenta), 2px 0 0 var(--mosh-cyan);
 }
 
 .glass-card {
@@ -130,11 +128,11 @@ body::after {
 .glitch-text {
   position: relative;
   color: #fff;
-  text-shadow: -2px -0.5px 0 var(--mosh-magenta), 2px 0.5px 0 var(--mosh-cyan);
+  text-shadow: -1.5px -0.5px 0 var(--mosh-magenta), 1.5px 0.5px 0 var(--mosh-cyan);
 }
 
 .glow-text {
-  text-shadow: 2px 2px 0px rgba(0, 240, 255, 0.15);
+  text-shadow: 2px 2px 0px rgba(0, 240, 255, 0.1);
 }
 
 .section-title {
