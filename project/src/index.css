@@ -31,7 +31,7 @@ body {
 }
 
 /* ==========================================================================
-   ФОНОВЫЙ ХАОС: ВЫНОСИМ НА САМЫЙ ВЕРХ (ПОПЕРЕК ВСЕГО ЭКРАНА)
+   НАТУРАЛЬНЫЕ СЛУЧАЙНЫЕ СДВИГИ И АРТЕФАКТЫ (ПОВЕРХ ВСЕГО)
    ========================================================================= */
 
 body::before, 
@@ -39,73 +39,75 @@ body::after {
   content: "";
   position: fixed;
   inset: 0;
-  pointer-events: none; /* Чтобы кнопки под глитчем всё еще нажимались */
-  z-index: 99999; /* Выкручиваем на максимум, поверх любой верстки */
+  pointer-events: none;
+  z-index: 99999; /* Всегда сверху */
 }
 
-/* Слой 1: Быстрые горизонтальные прострелы разноцветных блоков */
+/* Первый слой: Длинный цикл. Полная тишина, и вдруг микро-серия полос */
 body::before {
-  animation: datamosh-stripe-matrix 1.5s infinite steps(1);
+  animation: organic-stripes 7s infinite steps(1);
 }
 
-/* Слой 2: Крупные фрагментарные наплывы сломанных кадров */
+/* Второй слой: Другой тайминг. Выстреливает широкими пластами в другие моменты */
 body::after {
-  animation: datamosh-block-chaos 2.8s infinite steps(1);
+  animation: organic-blocks 11s infinite steps(1);
 }
 
-/* АНИМАЦИЯ 1: Быстрые плотные цветные полосы (как на твоем скрине) */
-@keyframes datamosh-stripe-matrix {
-  0%, 100% {
+/* АНИМАЦИЯ 1: Быстрые, как молния, прострелы полос (активность всего пару сотых долей секунды) */
+@keyframes organic-stripes {
+  /* 0% до 88% — ИДЕАЛЬНАЯ ТИШИНА (Сайт чистый) */
+  0%, 88%, 91%, 93%, 95%, 100% {
     background: transparent;
   }
-  8% {
-    /* Розово-зеленый блок вверху */
-    background: linear-gradient(to bottom, transparent 15%, var(--mosh-magenta) 15%, var(--mosh-green) 19%, transparent 19%);
+  /* 89% — Вспышка сверху */
+  89% {
+    background: linear-gradient(to bottom, transparent 8%, var(--mosh-magenta) 8%, var(--mosh-green) 12%, transparent 12%);
   }
-  22% {
-    /* Желто-голубой пласт */
-    background: linear-gradient(to bottom, transparent 60%, var(--mosh-yellow) 60%, var(--mosh-cyan) 67%, transparent 67%);
+  /* 90% — Моментальный сдвиг в центр */
+  90% {
+    background: linear-gradient(to bottom, transparent 45%, var(--mosh-yellow) 45%, var(--mosh-cyan) 49%, transparent 49%);
   }
-  40% {
-    /* Плотная пачка тонких фиолетовых полос */
-    background: repeating-linear-gradient(0deg, transparent 0px, transparent 8px, var(--mosh-purple) 8px, var(--mosh-cyan) 12px);
-    clip-path: inset(75% 0 10% 0);
+  /* 92% — Пачка фиолетовых полос внизу (прайс/контакты) */
+  92% {
+    background: repeating-linear-gradient(0deg, transparent 0px, transparent 6px, var(--mosh-purple) 6px, var(--mosh-cyan) 9px);
+    clip-path: inset(70% 0 15% 0);
   }
-  60% {
-    /* Центральный сбой */
-    background: linear-gradient(to bottom, transparent 38%, var(--mosh-magenta) 38%, var(--mosh-purple) 46%, transparent 46%);
-  }
-  80% {
-    /* Узкая яркая полоса */
-    background: linear-gradient(to bottom, transparent 28%, var(--mosh-green) 28%, var(--mosh-yellow) 30%, transparent 30%);
+  /* 94% — Последний одиночный прострел перед затуханием */
+  94% {
+    background: linear-gradient(to bottom, transparent 75%, var(--mosh-magenta) 75%, var(--mosh-purple) 78%, transparent 78%);
   }
 }
 
-/* АНИМАЦИЯ 2: Рваные куски поломанной развертки */
-@keyframes datamosh-block-chaos {
-  0%, 15%, 45%, 75%, 100% {
+/* АНИМАЦИЯ 2: Редкие, тяжелые деструктивные куски кадров (Datamosh пласты) */
+@keyframes organic-blocks {
+  /* Сплошной покой почти весь цикл */
+  0%, 42%, 45%, 47%, 82%, 85%, 100% {
     background: transparent;
   }
-  20% {
-    background: rgba(0, 240, 255, 0.08);
-    clip-path: inset(20% 0 45% 10%);
-    box-shadow: inset 100vw 0 0 rgba(255, 0, 85, 0.12);
+  /* 43% — На миг срезало кусок экрана */
+  43% {
+    background: rgba(0, 240, 255, 0.12);
+    clip-path: inset(30% 0 40% 15%);
+    box-shadow: inset 100vw 0 0 rgba(255, 0, 85, 0.15);
   }
-  50% {
-    background: rgba(181, 0, 255, 0.12);
-    clip-path: inset(60% 5% 15% 0);
+  /* 46% — Нижний пласт поплыл */
+  46% {
+    background: rgba(181, 0, 255, 0.15);
+    clip-path: inset(65% 10% 10% 0);
   }
-  80% {
+  /* 83% — Внезапный горизонтальный разрыв развертки посередине */
+  83% {
     background: linear-gradient(90deg, var(--mosh-magenta) 0%, var(--mosh-cyan) 100%);
-    opacity: 0.12;
-    clip-path: inset(10% 15% 50% 15%);
+    opacity: 0.15;
+    clip-path: inset(20% 5% 55% 5%);
   }
 }
 
 /* ==========================================================================
-   КОНТЕНТ САЙТА
+   КОНТЕНТ САЙТА (ПОРТФОЛИО, ТЕКСТ)
    ========================================================================= */
 
+/* Карточки портфолио: чистые, аккуратные, без шума */
 .thumb-card {
   position: relative;
   background: #06060a;
