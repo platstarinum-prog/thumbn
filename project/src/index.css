@@ -141,3 +141,37 @@ body::before {
 
 @keyframes panel-twitch {
   0% { transform: translateX(-2px); }
+  50% { transform: translateX(3px) translateY(-1px); }
+  100% { transform: translate(0); }
+}
+
+/* --- БИТЫЙ ТЕКСТ (DATA CORRUPTION) --- */
+.glitch-text {
+  position: relative;
+  color: #fff;
+  /* Чёткое рубленое смещение слоёв без размытия */
+  text-shadow: -2px -1px 0 var(--glitch-magenta), 2px 1px 0 var(--glitch-cyan);
+  animation: text-shred 5s infinite steps(1);
+}
+
+@keyframes text-shred {
+  0%, 93%, 97%, 100% { text-shadow: -2px -1px 0 var(--glitch-magenta), 2px 1px 0 var(--glitch-cyan); }
+  94% { text-shadow: -7px 3px 0 var(--glitch-yellow), 5px -1px 0 var(--glitch-green); }
+  95% { text-shadow: 6px -4px 0 var(--glitch-cyan), -5px 2px 0 var(--glitch-magenta); }
+  96% { text-shadow: -3px 5px 0 var(--glitch-green), 4px -5px 0 var(--glitch-yellow); }
+}
+
+/* Убираем неоновые glow-эффекты, делаем строгий резкий шрифт */
+.glow-text {
+  text-shadow: 2px 2px 0px rgba(0, 240, 255, 0.15);
+}
+
+.section-title {
+  font-family: 'Space Mono', monospace;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.font-mono-custom {
+  font-family: 'Space Mono', monospace;
+}
