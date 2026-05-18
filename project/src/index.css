@@ -9,14 +9,12 @@
 }
 
 :root {
-  --bg-primary: #030305;
-  --bg-secondary: #08080f;
-  --bg-tertiary: #0d0d14;
-  --matrix-green: #00ff66;
-  --neon-violet: #a855f7;
-  --neon-pink: #f472b6;
-  --red-shadow: #ff0055;
-  --blue-shadow: #00f0ff;
+  --bg-primary: #020204;
+  --bg-secondary: #07070d;
+  --bg-tertiary: #0c0c12;
+  --neon-cyan: #00f0ff;
+  --neon-magenta: #ff0055;
+  --neon-yellow: #ffea00;
 }
 
 html {
@@ -32,118 +30,114 @@ body {
   position: relative;
 }
 
-/* --- МАТРИЧНАЯ ЦИФРОВАЯ СЕТКА НА ФОНЕ --- */
+/* --- ЖЕСТКИЙ ДАТАМОШ НА ЗАДНЕМ ФОНЕ --- */
+/* Создаем сломанные пиксельные полосы сдвига, которые дергаются сзади контента */
 body::before {
   content: "";
   position: fixed;
   inset: 0;
-  /* Полупрозрачная пиксельная сетка в стиле интерфейсов Матрицы */
-  background-image: 
-    linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
-    linear-gradient(90deg, rgba(0, 255, 102, 0.02), rgba(168, 85, 247, 0.02), rgba(0, 240, 255, 0.02));
-  background-size: 100% 4px, 6px 100%;
+  background: 
+    linear-gradient(90deg, rgba(255, 0, 85, 0.03) 0%, rgba(0, 240, 255, 0.03) 50%, rgba(255, 234, 0, 0.02) 100%),
+    repeating-linear-gradient(
+      0deg,
+      transparent 0px,
+      transparent 30px,
+      rgba(0, 240, 255, 0.07) 30px,
+      rgba(0, 240, 255, 0.07) 33px,
+      transparent 33px,
+      transparent 70px,
+      rgba(255, 0, 85, 0.07) 70px,
+      rgba(255, 0, 85, 0.07) 75px
+    );
   pointer-events: none;
-  z-index: 9990;
+  z-index: -1;
+  animation: datamosh-bg 1.5s infinite steps(4); /* Эффект резких кадров без плавности */
 }
 
-/* Бегущая сверху вниз незаметная линия сканирования радара */
-body::after {
-  content: "";
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 5px;
-  background: linear-gradient(to bottom, transparent, rgba(0, 255, 102, 0.15), transparent);
-  animation: scanline-move 6s infinite linear;
-  pointer-events: none;
-  z-index: 9991;
+/* РЕЗКИЕ СБОИ ЦВЕТОВЫХ БЛОКОВ ПРИ СКРОЛЛЕ И НА ФОНЕ */
+@keyframes datamosh-bg {
+  0% { background-position: 0 0; filter: hue-rotate(0deg); }
+  25% { background-position: 20px -50px; filter: hue-rotate(90deg) contrast(1.2); }
+  50% { background-position: -10px 80px; filter: hue-rotate(180deg); }
+  75% { background-position: 40px 10px; filter: hue-rotate(270deg) contrast(1.5); }
+  100% { background-position: 0 0; filter: hue-rotate(360deg); }
 }
 
-/* --- ГЛИТЧ ПРИ СКРОЛЛЕ (БЕЗ ТРЯСКИ ТЕКСТА) --- */
-/* Используем встроенный scroll-driven эффект в CSS. 
-   Когда страница листается, блоки будут слегка расслоиться на RGB цвета */
-@property --scroll-glitch {
-  syntax: '<length>';
-  inherits: true;
-  initial-value: 0px;
-}
-
-/* Элементы портфолио и карточки будут мягко выдавать RGB-сдвиг хроматической аберрации только при ховере */
+/* --- КАРТОЧКИ С ЖЕСТКИМ ЦИФРОВЫМ СДВИГОМ (ПРИ НАВЕДЕНИИ) --- */
 .thumb-card {
   position: relative;
-  transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.3s;
+  background: var(--bg-secondary);
+  border: 1px solid rgba(0, 240, 255, 0.2);
+  transition: transform 0.1s steps(2);
 }
 
+/* При наведении карточка выдает резкие цветные полосы сдвига, как на твоем скрине */
 .thumb-card:hover {
-  transform: translateY(-5px) scale(1.01);
-  box-shadow: 
-    -3px 0 0px var(--red-shadow), 
-    3px 0 0px var(--blue-shadow),
-    0 0 30px rgba(168, 85, 247, 0.2);
+  animation: card-mosh 0.4s infinite steps(3);
+  border-color: var(--neon-magenta);
 }
 
-/* --- КРАСИВЫЙ СТИЛЬНЫЙ ГЛИТЧ ДЛЯ ТЕКСТА (ЧИТАЕМЫЙ) --- */
+@keyframes card-mosh {
+  0% {
+    box-shadow: 
+      -4px 0 0 var(--neon-magenta), 
+      4px 0 0 var(--neon-cyan);
+    transform: translate(2px, -1px);
+  }
+  33% {
+    box-shadow: 
+      -2px -3px 0 var(--neon-yellow), 
+      3px 2px 0 var(--neon-magenta);
+    transform: translate(-3px, 2px);
+  }
+  66% {
+    box-shadow: 
+      4px 2px 0 var(--neon-cyan), 
+      -3px -2px 0 var(--neon-yellow);
+    transform: translate(1px, -2px);
+  }
+  100% {
+    box-shadow: 
+      -4px 0 0 var(--neon-magenta), 
+      4px 0 0 var(--neon-cyan);
+    transform: translate(0, 0);
+  }
+}
+
+/* --- ЧЕТКИЕ КАРТОЧКИ БЕЗ МЫЛА И БЛЮРА --- */
+.glass-card {
+  background: #06060c;
+  border: 1px solid rgba(255, 0, 85, 0.2);
+  /* Никаких backdrop-filter: blur, только чистый solid и сочный контур */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
+}
+
+/* --- ХРОМАТИЧЕСКИЙ СДВИГ НА ЗАГОЛОВКАХ --- */
 .glitch-text {
   position: relative;
-  color: #fff;
-  text-shadow: 1px 1px 0px var(--red-shadow), -1px -1px 0px var(--blue-shadow);
+  text-shadow: 
+    -2px -1px 0px var(--neon-magenta), 
+    2px 1px 0px var(--neon-cyan);
+  animation: text-corrupt 4s infinite steps(2);
 }
 
-/* Микро-мерцание текста, как на старых мониторах, без уезда букв вбок */
-@keyframes text-flicker {
-  0%, 100% { opacity: 1; filter: contrast(1); }
-  98% { opacity: 1; }
-  98.5% { opacity: 0.95; filter: contrast(1.2); }
-  99% { opacity: 0.9; }
-  99.5% { opacity: 0.98; }
+@keyframes text-corrupt {
+  0%, 95%, 100% { text-shadow: -2px -1px 0 var(--neon-magenta), 2px 1px 0 var(--neon-cyan); }
+  96% { text-shadow: -5px 2px 0 var(--neon-yellow), 5px -2px 0 var(--neon-magenta); }
+  97% { text-shadow: 4px -3px 0 var(--neon-cyan), -4px 3px 0 var(--neon-yellow); }
+  98% { text-shadow: -1px 4px 0 var(--neon-magenta), 2px -4px 0 var(--neon-cyan); }
 }
 
-.glitch-text {
-  animation: text-flicker 3s infinite blue;
-}
-
-/* Кастомные карточки (Glassmorphism в стиле Киберпанк) */
-.glass-card {
-  background: rgba(8, 8, 15, 0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(0, 255, 102, 0.15);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.7);
-  transition: border-color 0.3s;
-}
-
-.glass-card:hover {
-  border-color: rgba(168, 85, 247, 0.4);
-}
-
-/* Свечение */
 .glow-text {
-  text-shadow: 0 0 10px var(--matrix-green), 0 0 20px rgba(0, 255, 102, 0.3);
-}
-
-/* Анимация линии сканирования */
-@keyframes scanline-move {
-  0% { transform: translateY(-100vh); }
-  100% { transform: translateY(100vh); }
+  text-shadow: 0 0 8px var(--neon-cyan);
 }
 
 .section-title {
   font-family: 'Space Mono', monospace;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
 }
 
 .font-mono-custom {
   font-family: 'Space Mono', monospace;
-}
-
-/* Медленный эмбиент заднего фона */
-.ambient-glow {
-  animation: slow-glow 8s ease-in-out infinite;
-}
-
-@keyframes slow-glow {
-  0%, 100% { opacity: 0.3; transform: scale(1); filter: blur(80px); }
-  50% { opacity: 0.5; transform: scale(1.05); filter: blur(100px); }
 }
