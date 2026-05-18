@@ -31,132 +31,65 @@ body {
 }
 
 /* ==========================================================================
-   ФОНОВЫЙ ХАОС: ТРИ СЛОЯ ДАТАМОШ-ПЛАТОВ ПО ВСЕМУ ЭКРАНУ (КАК НА СКРИНЕ)
+   ФОНОВЫЙ ХАОС: ДВА СЛОЯ ДАТАМОШ-ПЛАТОВ ПО ВСЕМУ ЭКРАНУ (ПРАЙС, КОНТАКТЫ И Т.Д.)
    ========================================================================== */
 
-/* Создаем контейнеры на фоне, которые будут генерировать плотные полосы */
 body::before, 
 body::after {
   content: "";
   position: fixed;
   inset: 0;
   pointer-events: none;
-  z-index: -1; /* Строго ПОД контентом, чтобы ничего не перекрывать */
+  z-index: -1; /* Сидит строго под контентом, чтобы текст оставался читаемым */
 }
 
-/* Слой 1: Постоянные быстрые горизонтальные прострелы разноцветных блоков */
+/* Слой 1: Быстрые горизонтальные прострелы разноцветных блоков */
 body::before {
   animation: datamosh-stripe-matrix 1.8s infinite steps(1);
 }
 
-/* Слой 2: Крупные, внезапные наплывы сломанных кадров */
+/* Слой 2: Крупные, фрагментарные наплывы сломанных кадров */
 body::after {
   animation: datamosh-block-chaos 3.2s infinite steps(1);
 }
 
-/* АНИМАЦИЯ 1: Быстрые цветные полосы в случайных частях экрана */
+/* АНИМАЦИЯ 1: Быстрые плотные цветные полосы в случайных местах */
 @keyframes datamosh-stripe-matrix {
   0%, 100% {
     background: transparent;
   }
   10% {
-    /* Розово-зеленый блок вверху страницы */
+    /* Верхняя часть */
     background: linear-gradient(to bottom, transparent 12%, var(--mosh-magenta) 12%, var(--mosh-green) 18%, transparent 18%);
     transform: translateX(15px);
   }
   25% {
-    /* Желто-голубой пласт в районе прайса */
+    /* Середина страницы (Прайс) */
     background: linear-gradient(to bottom, transparent 55%, var(--mosh-yellow) 55%, var(--mosh-cyan) 62%, transparent 62%);
     transform: translateX(-20px);
   }
   45% {
-    /* Плотная пачка тонких полос в самом низу у контактов */
+    /* Тонкие горизонтальные пачки у контактов */
     background: repeating-linear-gradient(0deg, transparent 0px, transparent 10px, var(--mosh-purple) 10px, var(--mosh-cyan) 14px);
     clip-path: inset(80% 0 5% 0);
     transform: translateX(10px);
   }
   65% {
-    /* Центральный сбой */
+    /* Центральный блок */
     background: linear-gradient(to bottom, transparent 35%, var(--mosh-magenta) 35%, var(--mosh-purple) 45%, transparent 45%);
     transform: translateX(-15px);
   }
   85% {
-    /* Узкая яркая полоса */
     background: linear-gradient(to bottom, transparent 22%, var(--mosh-green) 22%, var(--mosh-yellow) 24%, transparent 24%);
     transform: translateX(25px);
   }
 }
 
-/* АНИМАЦИЯ 2: Жесткие фрагментарные куски поломанной развертки */
+/* АНИМАЦИЯ 2: Рваные куски поломанной развертки по всему экрану */
 @keyframes datamosh-block-chaos {
   0%, 15%, 45%, 75%, 100% {
     background: transparent;
   }
   20% {
-    /* Огромный кусок кадра сдвигается справа */
     background: rgba(0, 240, 255, 0.05);
     clip-path: inset(25% 0 50% 15%);
-    box-shadow: inset 100vw 0 0 rgba(255, 0, 85, 0.1);
-    transform: translateX(-30px);
-  }
-  50% {
-    /* Сдвиг пласта по всей ширине в нижней части */
-    background: rgba(181, 0, 255, 0.08);
-    clip-path: inset(65% 5% 20% 0);
-    transform: translateX(35px);
-  }
-  80% {
-    /* Мощный горизонтальный разрыв сверху донизу */
-    background: linear-gradient(90deg, var(--mosh-magenta) 0%, var(--mosh-cyan) 100%);
-    opacity: 0.06;
-    clip-path: inset(5% 20% 40% 20%);
-    transform: scaleX(1.1) translateX(-10px);
-  }
-}
-
-/* ==========================================================================
-   КОНТЕНТ САЙТА (ЧИТАЕМЫЙ И СТАБИЛЬНЫЙ)
-   ========================================================================== */
-
-/* Карточки галереи (портфолио): аккуратные, без безумной тряски */
-.thumb-card {
-  position: relative;
-  background: #06060a;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  transition: border-color 0.2s ease, transform 0.2s ease;
-}
-
-.thumb-card:hover {
-  transform: translateY(-4px);
-  border-color: var(--mosh-cyan);
-  /* Легкий отсвет слоев по бокам при наведении */
-  box-shadow: -3px 0 0 var(--mosh-magenta), 3px 0 0 var(--mosh-cyan);
-}
-
-/* Стеклянные интерфейсные блоки (прайс, контакты и т.д.) */
-.glass-card {
-  background: rgba(4, 4, 7, 0.9);
-  border: 1px solid rgba(255, 255, 255, 0.03);
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.9);
-}
-
-/* Текст: Статичный, контрастный, со стильным хроматическим смещением */
-.glitch-text {
-  position: relative;
-  color: #fff;
-  text-shadow: -2px -0.5px 0 var(--mosh-magenta), 2px 0.5px 0 var(--mosh-cyan);
-}
-
-.glow-text {
-  text-shadow: 2px 2px 0px rgba(0, 240, 255, 0.15);
-}
-
-.section-title {
-  font-family: 'Space Mono', monospace;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-}
-
-.font-mono-custom {
-  font-family: 'Space Mono', monospace;
-}
