@@ -9,110 +9,135 @@
 }
 
 :root {
-  --bg-primary: #020204;
-  --bg-secondary: #07070d;
-  --bg-tertiary: #0c0c12;
-  --neon-cyan: #00f0ff;
-  --neon-magenta: #ff0055;
-  --neon-yellow: #ffea00;
+  --bg-dark: #020203;
+  --glitch-magenta: #ff0055;
+  --glitch-cyan: #00f0ff;
+  --glitch-yellow: #ffea00;
+  --glitch-green: #00ff66;
 }
 
 html {
   scroll-behavior: smooth;
-  background-color: var(--bg-primary);
+  background-color: var(--bg-dark);
 }
 
 body {
-  background-color: var(--bg-primary);
+  background-color: var(--bg-dark);
   color: #e2e8f0;
   font-family: 'Space Grotesk', sans-serif;
   overflow-x: hidden;
   position: relative;
 }
 
-/* --- ЧИСТЫЙ ТЕМНЫЙ ФОН БЕЗ ДЕРГАНИЯ --- */
+/* --- ГЛОБАЛЬНЫЕ ЖЁСТКИЕ ПРОСТРЕЛЫ ПО ЭКРАНУ (HARDWARE CORRUPTION) --- */
 body::before {
   content: "";
   position: fixed;
   inset: 0;
-  /* Статичная глубокая пиксельная текстура вместо мигающих полос */
-  background: 
-    linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.4) 50%),
-    linear-gradient(90deg, rgba(255, 0, 85, 0.01), rgba(0, 240, 255, 0.01));
-  background-size: 100% 4px, 6px 100%;
+  /* Статическая база: резкие битые линии сжатия данных */
+  background: repeating-linear-gradient(
+    0deg,
+    transparent 0px,
+    transparent 40px,
+    rgba(255, 0, 85, 0.05) 40px,
+    rgba(255, 0, 85, 0.05) 42px,
+    transparent 42px,
+    transparent 120px,
+    rgba(0, 240, 255, 0.05) 120px,
+    rgba(0, 240, 255, 0.05) 124px
+  );
   pointer-events: none;
-  z-index: -1;
+  z-index: 9990;
+  /* Редкие, но ебанутые прострелы артефактов по всему экрану */
+  animation: hardware-crash 8s infinite steps(1);
 }
 
-/* --- КАРТОЧКИ: СТАТИЧНЫЙ СТИЛЬ С ОСТРЫМ ЭФФЕКТОМ ПРИ НАВЕДЕНИИ --- */
+@keyframes hardware-crash {
+  0%, 94%, 98%, 100% {
+    background-image: none;
+    filter: chromatic-aberration(0);
+  }
+  95% {
+    /* Мощный горизонтальный сдвиг блока пикселей посередине */
+    background: linear-gradient(to bottom, transparent 40%, var(--glitch-magenta) 40%, var(--glitch-cyan) 43%, transparent 43%);
+    transform: translateX(15px);
+  }
+  96% {
+    /* Сбой матрицы в зелёный массив */
+    background: repeating-linear-gradient(90deg, transparent 0, transparent 10px, rgba(0, 255, 102, 0.1) 10px, rgba(0, 255, 102, 0.1) 12px);
+    transform: translateX(-10px) translateY(5px);
+  }
+  97% {
+    /* Полный перекос фазы VRAM */
+    background: linear-gradient(rgba(255, 234, 0, 0.1) 100%, transparent 0);
+    transform: scaleY(1.02);
+  }
+}
+
+/* --- ЭФФЕКТ СЛОМАННОГО КАДРА НА ВСЮ СТРАНИЦУ ПРИ СКРОЛЛЕ --- */
+/* При резком перемещении или ховере интерфейс выдаёт битые горизонтальные полосы */
 .thumb-card {
   position: relative;
-  background: var(--bg-secondary);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
-  transition: border-color 0.15s ease, transform 0.15s ease;
+  background: #06060a;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: transform 0.05s steps(1);
+  overflow: hidden;
 }
 
-/* Эффект Datamosh проскакивает ТОЛЬКО когда юзер наводит мышку */
+/* Эффект Datamosh / Битой видеокарты при наведении */
 .thumb-card:hover {
-  transform: scale(1.01);
-  border-color: var(--neon-cyan);
-  animation: single-mosh 0.2s steps(2) forwards;
+  animation: datamosh-destruction 0.3s infinite steps(3);
+  border: 1px solid var(--glitch-cyan);
 }
 
-/* Короткий, резкий пиксельный сдвиг кадра при ховере, который сразу затухает */
-@keyframes single-mosh {
+@keyframes datamosh-destruction {
   0% {
-    box-shadow: -4px 0 0 var(--neon-magenta), 4px 0 0 var(--neon-cyan);
-    filter: contrast(1.3) hue-rotate(10deg);
+    transform: translate(3px, -2px) skewX(5deg);
+    box-shadow: -5px 0 0 var(--glitch-magenta), 3px 0 0 var(--glitch-green);
+    filter: contrast(1.5) brightness(1.2);
   }
-  50% {
-    box-shadow: 3px 2px 0 var(--neon-yellow), -3px -1px 0 var(--neon-magenta);
-    filter: contrast(1.1) hue-rotate(-10deg);
+  33% {
+    transform: translate(-4px, 3px) skewX(-8deg);
+    box-shadow: 4px -2px 0 var(--glitch-cyan), -3px 3px 0 var(--glitch-yellow);
+    filter: invert(0.05) contrast(2);
+  }
+  66% {
+    transform: translate(1px, -4px) skewX(2deg);
+    box-shadow: -3px 4px 0 var(--glitch-green), 5px -1px 0 var(--glitch-magenta);
+    filter: hue-rotate(45deg);
   }
   100% {
-    box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
-    filter: contrast(1) hue-rotate(0deg);
+    transform: translate(0, 0) skewX(0deg);
+    box-shadow: none;
+    filter: none;
   }
 }
 
-/* --- СТИЛЬНЫЕ СТЕКЛЯННЫЕ ПАНЕЛИ (АДМИНКА/ИНТЕРФЕЙС) --- */
+/* Контент внутри карточки дублируем и сдвигаем псевдоэлементом, создавая эффект разорванного кадра */
+.thumb-card:hover::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: inherit;
+  background-position: center;
+  clip-path: inset(40% 0 35% 0); /* Вырезаем полосу посередине */
+  transform: translateX(-15px);  /* Сдвигаем её намертво влево */
+  opacity: 0.8;
+  z-index: 5;
+}
+
+/* --- ЖЁСТКИЕ СТЕКЛЯННЫЕ ИНТЕРФЕЙСЫ (БЕЗ МЫЛА) --- */
 .glass-card {
-  background: #05050a;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
-  transition: border-color 0.2s ease;
+  background: #040407;
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.9);
 }
 
 .glass-card:hover {
-  border-color: rgba(0, 240, 255, 0.3);
+  border-color: rgba(255, 0, 85, 0.3);
+  /* Резкий микро-сдвиг всей панели */
+  animation: panel-twitch 0.15s steps(2);
 }
 
-/* --- ЕСТЕСТВЕННЫЙ ХРОМАТИЧЕСКИЙ СДВИГ НА ТЕКСТЕ --- */
-/* Текст статичен, читается идеально. Раз в 6 секунд проскакивает микро-сбой матрицы */
-.glitch-text {
-  position: relative;
-  color: #fff;
-  animation: rare-glitch 6s infinite steps(1);
-}
-
-@keyframes rare-glitch {
-  0%, 95%, 100% { text-shadow: none; }
-  96% { text-shadow: -2px 0 var(--neon-magenta), 1px 0 var(--neon-cyan); }
-  97% { text-shadow: 2px -1px var(--neon-yellow), -2px 1px var(--neon-magenta); }
-  98% { text-shadow: -1px 1px var(--neon-cyan), 1px -1px var(--neon-yellow); }
-}
-
-.glow-text {
-  text-shadow: 0 0 10px rgba(0, 240, 255, 0.4);
-}
-
-.section-title {
-  font-family: 'Space Mono', monospace;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-}
-
-.font-mono-custom {
-  font-family: 'Space Mono', monospace;
-}
+@keyframes panel-twitch {
+  0% { transform: translateX(-2px); }
