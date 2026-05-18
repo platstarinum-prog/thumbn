@@ -9,11 +9,12 @@
 }
 
 :root {
-  --bg-dark: #020203;
-  --mosh-magenta: #ff0055;
-  --mosh-cyan: #00f0ff;
-  --mosh-yellow: #ffea00;
-  --mosh-green: #00ff66;
+  --bg-dark: #030305;
+  --mosh-magenta: rgba(255, 0, 85, 0.45);
+  --mosh-cyan: rgba(0, 240, 255, 0.45);
+  --mosh-yellow: rgba(255, 234, 0, 0.35);
+  --mosh-green: rgba(0, 255, 102, 0.35);
+  --border-glow: rgba(0, 240, 255, 0.15);
 }
 
 html {
@@ -30,114 +31,116 @@ body {
 }
 
 /* ==========================================================================
-   УЛЬТРА-СКОРОСТНЫЕ ХАmultiplierОТИЧНЫЕ ПОЛОСОЧКИ (РАССИНХРОН)
+   DIGITAL СДВИГИ: ХАmultiplierОТИЧНЫЕ ПОЛУПРОЗРАЧНЫЕ НИТИ ПОПЕРЕК ЭКРАНА
    ========================================================================= */
 
-/* Создаем 3 независимых слоя для полной поломки предсказуемости */
 body::before,
-body::after,
-.organic-glitch-overlay {
+body::after {
   content: "";
   position: fixed;
   inset: 0;
   pointer-events: none;
   z-index: 99999;
+  mix-blend-mode: screen; /* Полосочки сочно подсвечивают контент при пересечении */
 }
 
-/* Слой 1: Мелкие, частые разноцветные нити */
+/* Слой 1: Ультра-быстрые нити на нечетном тайминге */
 body::before {
   animation: fast-slices-a 3.1s infinite steps(1);
 }
 
-/* Слой 2: Средние прострелы полосок (работает невпопад с первым) */
+/* Слой 2: Рассинхронизированный поток для создания честного рандома */
 body::after {
   animation: fast-slices-b 4.3s infinite steps(1);
 }
 
-/* АНИМАЦИЯ СЛОЯ А: Тонкие, как лезвие, горизонтальные срезы кадра на микро-мгновение */
 @keyframes fast-slices-a {
   0%, 23%, 26%, 64%, 67%, 81%, 84%, 100% {
     background: transparent;
   }
   24% {
-    /* Розовая нить */
-    background: linear-gradient(to bottom, transparent 18%, var(--mosh-magenta) 18%, var(--mosh-magenta) 18.3%, transparent 18.3%);
+    /* Тончайший розовый срез */
+    background: linear-gradient(to bottom, transparent 18%, var(--mosh-magenta) 18%, var(--mosh-magenta) 18.2%, transparent 18.2%);
   }
   25% {
-    /* Тут же прыгает в зелено-желтую пару полосок ниже */
-    background: linear-gradient(to bottom, transparent 62%, var(--mosh-green) 62%, var(--mosh-green) 62.4%, transparent 62.4%, transparent 64%, var(--mosh-yellow) 64%, var(--mosh-yellow) 64.2%, transparent 64.2%);
+    /* Сдвоенная зелено-желтая наводка */
+    background: linear-gradient(to bottom, transparent 62%, var(--mosh-green) 62%, var(--mosh-green) 62.3%, transparent 62.3%, transparent 64%, var(--mosh-yellow) 64%, var(--mosh-yellow) 64.2%, transparent 64.2%);
   }
   65% {
-    /* Одиночный резкий прострел у прайса */
-    background: linear-gradient(to bottom, transparent 48%, var(--mosh-cyan) 48%, var(--mosh-cyan) 48.5%, transparent 48.5%);
+    /* Быстрый прострел по центру */
+    background: linear-gradient(to bottom, transparent 48%, var(--mosh-cyan) 48%, var(--mosh-cyan) 48.4%, transparent 48.4%);
   }
   82% {
-    /* Пачка микро-полос у контактов */
-    background: repeating-linear-gradient(0deg, transparent 0px, transparent 15px, var(--mosh-magenta) 15px, var(--mosh-cyan) 16px);
-    clip-path: inset(72% 0 25% 0);
+    /* Микро-развертка в нижней трети страницы (прайс/контакты) */
+    background: repeating-linear-gradient(0deg, transparent 0px, transparent 12px, var(--mosh-magenta) 12px, var(--mosh-cyan) 13px);
+    clip-path: inset(70% 0 22% 0);
   }
 }
 
-/* АНИМАЦИЯ СЛОЯ Б: Вспыхивает абсолютно в другие тайминги, создавая эффект рваного рандома */
 @keyframes fast-slices-b {
   0%, 11%, 14%, 48%, 51%, 90%, 93%, 100% {
     background: transparent;
   }
   12% {
-    /* Голубой разрез в верхней трети экрана */
-    background: linear-gradient(to bottom, transparent 30%, var(--mosh-cyan) 30%, var(--mosh-cyan) 30.4%, transparent 30.4%);
+    /* Циановый разрез в верхней части сайта */
+    background: linear-gradient(to bottom, transparent 28%, var(--mosh-cyan) 28%, var(--mosh-cyan) 28.3%, transparent 28.3%);
   }
   13% {
-    /* Резкое смещение слоев */
-    background: linear-gradient(to bottom, transparent 33%, var(--mosh-yellow) 33%, var(--mosh-magenta) 33.6%, transparent 33.6%);
+    /* Сдвиг фазы */
+    background: linear-gradient(to bottom, transparent 32%, var(--mosh-yellow) 32%, var(--mosh-magenta) 32.5%, transparent 32.5%);
   }
   49% {
-    /* Тонкая прошивка по центру */
-    background: repeating-linear-gradient(0deg, transparent 0px, transparent 8px, var(--mosh-green) 8px, var(--mosh-magenta) 9px);
-    clip-path: inset(40% 0 58% 0);
+    /* Тонкая горизонтальная прошивка */
+    background: repeating-linear-gradient(0deg, transparent 0px, transparent 6px, var(--mosh-green) 6px, var(--mosh-magenta) 7px);
+    clip-path: inset(42% 0 55% 0);
   }
   91% {
-    /* Предпоследний микро-кадр перед тишиной */
-    background: linear-gradient(to bottom, transparent 85%, var(--mosh-cyan) 85%, var(--mosh-yellow) 85.5%, transparent 85.5%);
+    /* Финальный аккорд перед кругом */
+    background: linear-gradient(to bottom, transparent 82%, var(--mosh-cyan) 82%, var(--mosh-yellow) 82.4%, transparent 82.4%);
   }
 }
 
 /* ==========================================================================
-   ИНТЕРФЕЙС И ГАЛЕРЕЯ (ЖЕСТКО СТАТИЧНЫЕ, ЧИТАЕМЫЕ)
+   КОНТЕНТ САЙТА: СТРОГИЙ СТИЛЬНЫЙ ИНТЕРФЕЙС
    ========================================================================= */
 
+/* Карточки портфолио: чистая статика, дорогие акценты */
 .thumb-card {
   position: relative;
-  background: #06060a;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  transition: border-color 0.2s ease, transform 0.2s ease;
+  background: #07070c;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  transition: border-color 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .thumb-card:hover {
   transform: translateY(-4px);
-  border-color: var(--mosh-cyan);
-  box-shadow: -2px 0 0 var(--mosh-magenta), 2px 0 0 var(--mosh-cyan);
+  border-color: rgba(0, 240, 255, 0.4);
+  /* Аккуратный хроматический отсвет по бокам карточки */
+  box-shadow: -2px 0 0 rgba(255, 0, 85, 0.4), 2px 0 0 rgba(0, 240, 255, 0.4), 0 12px 40px rgba(0, 0, 0, 0.7);
 }
 
+/* Информационные блоки (прайс-лист, формы обратной связи) */
 .glass-card {
-  background: #040407;
+  background: #050509;
   border: 1px solid rgba(255, 255, 255, 0.03);
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.9);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.8);
 }
 
+/* Типографика с легким фиксированным RGB-смещением */
 .glitch-text {
   position: relative;
-  color: #fff;
-  text-shadow: -1.5px -0.5px 0 var(--mosh-magenta), 1.5px 0.5px 0 var(--mosh-cyan);
+  color: #ffffff;
+  text-shadow: -1.5px -0.5px 0 rgba(255, 0, 85, 0.5), 1.5px 0.5px 0 rgba(0, 240, 255, 0.5);
 }
 
 .glow-text {
-  text-shadow: 2px 2px 0px rgba(0, 240, 255, 0.1);
+  text-shadow: 0 0 12px rgba(0, 240, 255, 0.2);
 }
 
 .section-title {
   font-family: 'Space Mono', monospace;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.25em;
   text-transform: uppercase;
 }
 
