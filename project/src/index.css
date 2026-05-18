@@ -31,7 +31,7 @@ body {
 }
 
 /* ==========================================================================
-   ФОНОВЫЙ ХАОС: ДВА СЛОЯ ДАТАМОШ-ПЛАТОВ ПО ВСЕМУ ЭКРАНУ (ПРАЙС, КОНТАКТЫ И Т.Д.)
+   ФОНОВЫЙ ХАОС: ВЫНОСИМ НА САМЫЙ ВЕРХ (ПОПЕРЕК ВСЕГО ЭКРАНА)
    ========================================================================= */
 
 body::before, 
@@ -39,79 +39,76 @@ body::after {
   content: "";
   position: fixed;
   inset: 0;
-  pointer-events: none;
-  z-index: -1;
+  pointer-events: none; /* Чтобы кнопки под глитчем всё еще нажимались */
+  z-index: 99999; /* Выкручиваем на максимум, поверх любой верстки */
 }
 
 /* Слой 1: Быстрые горизонтальные прострелы разноцветных блоков */
 body::before {
-  animation: datamosh-stripe-matrix 1.8s infinite steps(1);
+  animation: datamosh-stripe-matrix 1.5s infinite steps(1);
 }
 
-/* Слой 2: Крупные, фрагментарные наплывы сломанных кадров */
+/* Слой 2: Крупные фрагментарные наплывы сломанных кадров */
 body::after {
-  animation: datamosh-block-chaos 3.2s infinite steps(1);
+  animation: datamosh-block-chaos 2.8s infinite steps(1);
 }
 
-/* АНИМАЦИЯ 1: Быстрые плотные цветные полосы в случайных местах */
+/* АНИМАЦИЯ 1: Быстрые плотные цветные полосы (как на твоем скрине) */
 @keyframes datamosh-stripe-matrix {
   0%, 100% {
     background: transparent;
   }
-  10% {
-    background: linear-gradient(to bottom, transparent 12%, var(--mosh-magenta) 12%, var(--mosh-green) 18%, transparent 18%);
-    transform: translateX(15px);
+  8% {
+    /* Розово-зеленый блок вверху */
+    background: linear-gradient(to bottom, transparent 15%, var(--mosh-magenta) 15%, var(--mosh-green) 19%, transparent 19%);
   }
-  25% {
-    background: linear-gradient(to bottom, transparent 55%, var(--mosh-yellow) 55%, var(--mosh-cyan) 62%, transparent 62%);
-    transform: translateX(-20px);
+  22% {
+    /* Желто-голубой пласт */
+    background: linear-gradient(to bottom, transparent 60%, var(--mosh-yellow) 60%, var(--mosh-cyan) 67%, transparent 67%);
   }
-  45% {
-    background: repeating-linear-gradient(0deg, transparent 0px, transparent 10px, var(--mosh-purple) 10px, var(--mosh-cyan) 14px);
-    clip-path: inset(80% 0 5% 0);
-    transform: translateX(10px);
+  40% {
+    /* Плотная пачка тонких фиолетовых полос */
+    background: repeating-linear-gradient(0deg, transparent 0px, transparent 8px, var(--mosh-purple) 8px, var(--mosh-cyan) 12px);
+    clip-path: inset(75% 0 10% 0);
   }
-  65% {
-    background: linear-gradient(to bottom, transparent 35%, var(--mosh-magenta) 35%, var(--mosh-purple) 45%, transparent 45%);
-    transform: translateX(-15px);
+  60% {
+    /* Центральный сбой */
+    background: linear-gradient(to bottom, transparent 38%, var(--mosh-magenta) 38%, var(--mosh-purple) 46%, transparent 46%);
   }
-  85% {
-    background: linear-gradient(to bottom, transparent 22%, var(--mosh-green) 22%, var(--mosh-yellow) 24%, transparent 24%);
-    transform: translateX(25px);
+  80% {
+    /* Узкая яркая полоса */
+    background: linear-gradient(to bottom, transparent 28%, var(--mosh-green) 28%, var(--mosh-yellow) 30%, transparent 30%);
   }
 }
 
-/* АНИМАЦИЯ 2: Рваные куски поломанной развертки по всему экрану */
+/* АНИМАЦИЯ 2: Рваные куски поломанной развертки */
 @keyframes datamosh-block-chaos {
   0%, 15%, 45%, 75%, 100% {
     background: transparent;
   }
   20% {
-    background: rgba(0, 240, 255, 0.05);
-    clip-path: inset(25% 0 50% 15%);
-    box-shadow: inset 100vw 0 0 rgba(255, 0, 85, 0.1);
-    transform: translateX(-30px);
+    background: rgba(0, 240, 255, 0.08);
+    clip-path: inset(20% 0 45% 10%);
+    box-shadow: inset 100vw 0 0 rgba(255, 0, 85, 0.12);
   }
   50% {
-    background: rgba(181, 0, 255, 0.08);
-    clip-path: inset(65% 5% 20% 0);
-    transform: translateX(35px);
+    background: rgba(181, 0, 255, 0.12);
+    clip-path: inset(60% 5% 15% 0);
   }
   80% {
     background: linear-gradient(90deg, var(--mosh-magenta) 0%, var(--mosh-cyan) 100%);
-    opacity: 0.06;
-    clip-path: inset(5% 20% 40% 20%);
-    transform: scaleX(1.1) translateX(-10px);
+    opacity: 0.12;
+    clip-path: inset(10% 15% 50% 15%);
   }
 }
 
 /* ==========================================================================
-   КОНТЕНТ САЙТА (СТАБИЛЬНЫЙ И ЧИТАЕМЫЙ)
+   КОНТЕНТ САЙТА
    ========================================================================= */
 
 .thumb-card {
   position: relative;
-  background: #06060a !important;
+  background: #06060a;
   border: 1px solid rgba(255, 255, 255, 0.05);
   transition: border-color 0.2s ease, transform 0.2s ease;
 }
@@ -123,7 +120,7 @@ body::after {
 }
 
 .glass-card {
-  background: #040407 !important;
+  background: #040407;
   border: 1px solid rgba(255, 255, 255, 0.03);
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.9);
 }
@@ -146,22 +143,4 @@ body::after {
 
 .font-mono-custom {
   font-family: 'Space Mono', monospace;
-}
-
-/* ==========================================================================
-   ПРОЯВКА: ПРОБИВАЕМ ТАЙЛВИНД-ФОНЫ СЕКЦИЙ ДЛЯ ВИДИМОСТИ ГЛИТЧА
-   ========================================================================= */
-#root, 
-main, 
-section,
-div[class*="bg-"] {
-  background-color: transparent !important;
-}
-
-.glass-card, 
-.thumb-card,
-header,
-footer,
-form {
-  background-color: #05050a !important;
 }
