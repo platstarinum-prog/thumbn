@@ -37,3 +37,22 @@ collections:
       - { label: "Название (Label)", name: "label", widget: "string" }
       - { label: "Картинка ДО (Before)", name: "before", widget: "image" }
       - { label: "Картинка ПОСЛЕ (After)", name: "after", widget: "image" }
+
+  # Настройка для блока PRICING
+  - name: "pricing"
+    label: "Pricing (Тарифы)"
+    folder: "project/src/content/pricing"
+    extension: "json"
+    format: "json"
+    create: true
+    delete: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Иконка", name: "icon", widget: "select", options: ["Zap", "Package", "Repeat"] }
+      - { label: "Название (Name)", name: "name", widget: "string" }
+      - { label: "Цена (Price)", name: "price", widget: "string" }
+      - { label: "Период (Period)", name: "period", widget: "string" }
+      - { label: "Описание (Description)", name: "description", widget: "string" }
+      - { label: "Список фич (Features)", name: "features", widget: "list" }
+      - { label: "Цвет акцента (HEX)", name: "accent", widget: "string" }
+      - { label: "Популярный (Popular)", name: "popular", widget: "boolean", default: false }

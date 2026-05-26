@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
-import { Send, Instagram, MessageSquare, Mail, ArrowRight } from 'lucide-react';
+import { Send, Instagram, MessageSquare, ArrowRight } from 'lucide-react';
 
 // Чистый SVG для TikTok, так как в Lucide его нет по дефолту
 const TikTokIcon = ({ className }: { className?: string }) => (

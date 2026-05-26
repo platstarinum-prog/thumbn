@@ -1,0 +1,17 @@
+{
+  "icon": "Package",
+  "name": "Pack of 3",
+  "price": "$89",
+  "period": "per pack",
+  "description": "The most popular choice for creators who want consistent branding.",
+  "features": [
+    "Everything in One",
+    "3 custom thumbnails",
+    "Consistent style guide",
+    "Priority delivery (36h)",
+    "Unlimited revisions",
+    "Brand kit included"
+  ],
+  "accent": "#c084fc",
+  "popular": true
+}

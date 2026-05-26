@@ -1,0 +1,16 @@
+{
+  "icon": "Zap",
+  "name": "One Thumbnail",
+  "price": "$35",
+  "period": "per thumbnail",
+  "description": "Perfect for testing the quality before committing to a larger package.",
+  "features": [
+    "Custom cinematic design",
+    "2 revision rounds",
+    "48h delivery",
+    "Source file included",
+    "Commercial license"
+  ],
+  "accent": "#a855f7",
+  "popular": false
+}

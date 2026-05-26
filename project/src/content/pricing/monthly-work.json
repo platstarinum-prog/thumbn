@@ -1,0 +1,17 @@
+{
+  "icon": "Repeat",
+  "name": "Monthly Work",
+  "price": "$249",
+  "period": "per month",
+  "description": "For serious creators who publish regularly and need constant quality.",
+  "features": [
+    "Everything in Pack",
+    "Up to 10 thumbnails",
+    "Dedicated support",
+    "Same-day delivery",
+    "A/B test variants",
+    "Analytics consulting"
+  ],
+  "accent": "#f472b6",
+  "popular": false
+}

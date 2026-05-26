@@ -1,59 +1,24 @@
 import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
-import { Check, Zap, Package, Repeat } from 'lucide-react';
+import { Check, Zap, Package, Repeat, LucideIcon } from 'lucide-react';
 
-const plans = [
-  {
-    icon: Zap,
-    name: 'One Thumbnail',
-    price: '$35',
-    period: 'per thumbnail',
-    description: 'Perfect for testing the quality before committing to a larger package.',
-    features: [
-      'Custom cinematic design',
-      '2 revision rounds',
-      '48h delivery',
-      'Source file included',
-      'Commercial license',
-    ],
-    accent: '#a855f7',
-    popular: false,
-  },
-  {
-    icon: Package,
-    name: 'Pack of 3',
-    price: '$89',
-    period: 'per pack',
-    description: 'The most popular choice for creators who want consistent branding.',
-    features: [
-      'Everything in One',
-      '3 custom thumbnails',
-      'Consistent style guide',
-      'Priority delivery (36h)',
-      'Unlimited revisions',
-      'Brand kit included',
-    ],
-    accent: '#c084fc',
-    popular: true,
-  },
-  {
-    icon: Repeat,
-    name: 'Monthly Work',
-    price: '$249',
-    period: 'per month',
-    description: 'For serious creators who publish regularly and need constant quality.',
-    features: [
-      'Everything in Pack',
-      'Up to 10 thumbnails',
-      'Dedicated support',
-      'Same-day delivery',
-      'A/B test variants',
-      'Analytics consulting',
-    ],
-    accent: '#f472b6',
-    popular: false,
-  },
-];
+const iconMap: Record<string, LucideIcon> = { Zap, Package, Repeat };
+
+const modules = import.meta.glob<{
+  icon: string;
+  name: string;
+  price: string;
+  period: string;
+  description: string;
+  features: string[];
+  accent: string;
+  popular: boolean;
+}>('/src/content/pricing/*.json', { eager: true });
+
+const plans = Object.values(modules).map((mod) => ({
+  ...mod,
+  icon: iconMap[mod.icon] || Zap,
+}));
 
 export default function Pricing() {
   const ref = useRef(null);
@@ -154,7 +119,7 @@ export default function Pricing() {
                   </div>
 
                   <ul className="space-y-3 flex-1 mb-8">
-                    {plan.features.map((f) => (
+                    {plan.features.map((f: string) => (
                       <li key={f} className="flex items-center gap-3 text-sm text-gray-400">
                         <div
                           className="w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0"

@@ -20,7 +20,7 @@ export default function Footer() {
         />
 
         <div className="text-xs tracking-widest text-gray-600 hover:text-white/40 transition-colors">
-          DEVELOPED BY <span class="text-white/40 font-bold">KRVTSV CORP</span> //{' '}
+          DEVELOPED BY <span className="text-white/40 font-bold">KRVTSV CORP</span> //{' '}
           <a 
             href="https://kravtsov.netlify.app/" 
             className="underline hover:text-cyan-400 transition-colors ml-1"
